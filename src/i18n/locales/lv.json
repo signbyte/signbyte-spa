@@ -1,0 +1,762 @@
+{
+  "app": {
+    "name": "signbyte",
+    "tagline": "Parakstiet, validējiet un saglabājiet - uzticami, Eiropas standartos."
+  },
+  "nav": {
+    "dashboard": "Darbvirsma",
+    "documents": "Dokumenti",
+    "newSignature": "Jauns paraksts",
+    "verify": "Pārbaudīt",
+    "backToSite": "Atpakaļ uz vietni",
+    "history": "Vēsture"
+  },
+  "shell": {
+    "workspace": "Pilsoņa darbvieta",
+    "storageTitle": "Īslaicīga glabātuve",
+    "storageNote": "Šifrēta, īslaicīga glabātuve - dokumenti tiek dzēsti pēc 24 stundām.",
+    "search": "Meklēt dokumentus",
+    "primaryNav": "Galvenā navigācija",
+    "skipToContent": "Pāriet uz galveno saturu",
+    "menu": "Izvēlne",
+    "openMenu": "Atvērt izvēlni",
+    "switchLanguage": "Mainīt valodu"
+  },
+  "login": {
+    "title": "Pieslēgties {brand}",
+    "subtitle": "Izmantojiet savu nacionālo eID. Mēs nekad neredzam paroli vai parakstīšanas atslēgu — jūs to apstiprināt savā eID lietotnē vai ar karti.",
+    "method": {
+      "eparakstsMobile": "eParaksts Mobile",
+      "eidScan": "eID Scan",
+      "webEid": "eID karte"
+    },
+    "methodDesc": {
+      "eparakstsMobile": "Apstipriniet eParaksts mobilajā lietotnē",
+      "webEid": "Izmantojiet eID karti šajā pārlūkā",
+      "eidScan": "Skenējiet eID karti ar tālruni"
+    },
+    "loaNote": "Jūs tiksiet novirzīts uz sava eID pakalpojumu sniedzēja vietni ar LoA High un pēc tam atgriezts šeit.",
+    "verifyCta": "Pārbaudīt dokumentu",
+    "verifyNote": "konts nav nepieciešams",
+    "signingIn": "Notiek pieslēgšanās…",
+    "returning": {
+      "body": "Ja tiek prasīts, apstipriniet {method}. Mēs jūs automātiski novirzīsim uz darbvirsmu."
+    },
+    "failedTitle": "Pieslēgšanās netika pabeigta",
+    "failedBody": "Pieprasījums tika atcelts vai tā izpildes laiks eID lietotnē beidzās. Sesija netika izveidota.",
+    "retry": "Mēģināt vēlreiz"
+  },
+  "callback": {
+    "completing": "Pabeidz pieslēgšanos…",
+    "completingBody": "Tas aizņem tikai mirkli — mēs jūs automātiski novirzīsim uz darbvirsmu.",
+    "failed": "Neizdevās pabeigt pieslēgšanos.",
+    "cancelled": "Pieslēgšanās tika atcelta. Varat mēģināt vēlreiz, kad esat gatavs.",
+    "idpError": "Identitātes pakalpojuma sniedzējam radās kļūme. Lūdzu, mēģiniet vēlreiz."
+  },
+  "verify": {
+    "heading": "Pārbaudīt dokumentu",
+    "sub": "Pārbaudiet, kas dokumentu ir parakstījis un vai paraksti ir derīgi. Der parakstītiem PDF un ASiC-E (.asice, .edoc) failiem — konts nav vajadzīgs.",
+    "dropTitle": "Ievelciet parakstītu dokumentu šeit vai klikšķiniet, lai izvēlētos",
+    "dropHint": "Parakstīts PDF vai ASiC-E konteiners, līdz 25 MB. Fails tiek pārbaudīts un uzreiz dzēsts — nekas netiek saglabāts.",
+    "browse": "Izvēlēties failu pārbaudei",
+    "another": "Pārbaudīt citu dokumentu",
+    "err": {
+      "generic": "Pārbaude neizdevās. Lūdzu, mēģiniet vēlreiz.",
+      "notSigned": "Šim dokumentam nav paraksta — nav ko pārbaudīt.",
+      "unsupportedType": "Pārbaudīt var tikai parakstītu PDF vai ASiC-E konteineru (.pdf, .asice, .edoc, .sce).",
+      "malformed": "Šo failu nevar nolasīt kā parakstītu dokumentu — tas var būt bojāts vai ar neatbilstošu faila tipu.",
+      "tooLarge": "Fails ir par lielu. Limits ir 25 MB.",
+      "rateLimited": "Pārāk daudz pārbaudes pieprasījumu — lūdzu, uzgaidiet brīdi un mēģiniet vēlreiz.",
+      "upstream": "Pārbaudes serviss īslaicīgi nav pieejams. Lūdzu, mēģiniet vēlreiz pēc brīža."
+    },
+    "validateNext": "Pārbaudīt nākamo",
+    "checking": "Pārbauda parakstus…",
+    "checkingHint": "Pārbaude pret ES uzticamības sarakstiem — parasti dažas sekundes.",
+    "checkingStage": "Pārbauda parakstus · EU DSS",
+    "working": "Pārbauda…"
+  },
+  "extMissing": {
+    "title": "Pārlūka paplašinājums nav atrasts",
+    "body": "Lai parakstītu ar savu eID karti, jābūt instalētai un iespējotai nacionālajai eID programmatūrai un tās pārlūka paplašinājumam.",
+    "needTitle": "Kas nepieciešams",
+    "item1": "eID programmatūra (eParaksts / nacionālā starpprogrammatūra)",
+    "item2": "Pārlūka parakstīšanas paplašinājums, iespējots",
+    "item3": "Kartes lasītājs ar ievietotu eID karti",
+    "install": "Instalēt eID programmatūru",
+    "another": "Izvēlēties citu metodi",
+    "retry": "Esmu to instalējis — mēģināt vēlreiz"
+  },
+  "home": {
+    "title": "Sākums",
+    "awaiting": "Gaida jūsu parakstu",
+    "needsAttention": "Nepieciešama jūsu uzmanība",
+    "recent": "Nesena darbība",
+    "empty": "Šobrīd nekas neprasa jūsu uzmanību.",
+    "recentEmpty": "Šeit parādīsies jūsu nesenās parakstīšanas darbības.",
+    "loading": "Notiek jūsu darbību ielāde...",
+    "newSignature": "Sākt jaunu parakstu",
+    "viewAll": "Skatīt visus",
+    "envelope": {
+      "progress": "parakstīts {signed} no {total}",
+      "yourTurn": "Ir jūsu kārta parakstīt",
+      "waiting": "Gaida citus parakstītājus",
+      "inProgress": "Procesā",
+      "completed": "Pilnībā parakstīts",
+      "cancelled": "Atcelts",
+      "open": "Atvērt"
+    }
+  },
+  "documents": {
+    "title": "Dokumenti",
+    "subtitle": "Viss, ko esat augšupielādējis, parakstījis vai aicināts parakstīt.",
+    "stat": {
+      "documents": "Dokumenti",
+      "awaiting": "Gaida jūs",
+      "completed": "Pabeigti",
+      "storage": "Glabāšanas laiks"
+    },
+    "filter": {
+      "all": "Visi",
+      "drafts": "Melnraksti",
+      "awaiting": "Gaida",
+      "completed": "Pabeigti",
+      "received": "Augšupielādēti",
+      "signed": "Parakstīti"
+    },
+    "upload": {
+      "ttlNote": "Šifrēti glabātuvē. Dokumenti tiek automātiski dzēsti pēc 24 stundām; līdzparakstīšana pagarina glabāšanas laiku. Dokumentu varat dzēst manuāli jebkurā laikā."
+    },
+    "col": {
+      "document": "Dokuments",
+      "status": "Statuss",
+      "parties": "Puses",
+      "size": "Izmērs",
+      "ttl": "Glabāšanas laiks",
+      "updated": "Atjaunināts",
+      "actions": "Darbības"
+    },
+    "status": {
+      "received": "Augšupielādēts",
+      "draft": "Melnraksts",
+      "awaiting": "Gaida",
+      "signing": "Parakstīšanā",
+      "signed": "Parakstīts",
+      "completed": "Pabeigts",
+      "expired": "Beidzies",
+      "declined": "Noraidīts",
+      "unknown": "Nezināms"
+    },
+    "parties": {
+      "you": "Jūs",
+      "multiple": "Vairāki parakstītāji"
+    },
+    "note": {
+      "declined": "Parakstīšana tika noraidīta.",
+      "expired": "Glabāšanas laiks beidzies — šifrētie dati tika automātiski dzēsti; validācijas atskaite ir saglabāta."
+    },
+    "ttl": {
+      "expired": "Beidzies",
+      "remaining": "atlicis {time}",
+      "hours": "{n}h",
+      "days": "{n}d",
+      "none": "—"
+    },
+    "action": {
+      "sign": "Parakstīt",
+      "download": "Lejupielādēt",
+      "delete": "Dzēst",
+      "confirm": "Dzēst šo dokumentu?",
+      "confirmYes": "Dzēst",
+      "confirmNo": "Paturēt"
+    },
+    "empty": {
+      "title": "Vēl nav dokumentu",
+      "body": "Sāciet parakstīšanu, lai pievienotu pirmo dokumentu.",
+      "cta": "Sākt parakstīšanu",
+      "verify": "Vai pārbaudīt dokumentu",
+      "filtered": "Neviens dokuments neatbilst šim filtram."
+    },
+    "error": {
+      "title": "Neizdevās ielādēt jūsu dokumentus."
+    },
+    "loading": "Notiek dokumentu ielāde..."
+  },
+  "signing": {
+    "title": "Parakstīt dokumentu",
+    "subtitle": "Izvēlieties, kā parakstīt. Metodei jāatbilst tam, kā pieslēdzāties.",
+    "noFlows": "Jūsu pieslēgšanai nav pieejama parakstīšanas metode. Pieslēdzieties vēlreiz, lai parakstītu dokumentus.",
+    "chooseSub": "Katra metode ir LoA High un rada kvalificētu parakstu.",
+    "sealPicker": "Izvēlieties, kuru zīmogu lietot",
+    "signCta": "Parakstīt",
+    "method": {
+      "webEid": "eID karte",
+      "eidScan": "eID Scan",
+      "eparakstsMobile": "eParaksts Mobile",
+      "eparakstsMobileEseal": "eParaksts Mobile (e-zīmogs)",
+      "csc": "Mākoņa paraksts"
+    },
+    "methodTag": {
+      "webEid": "Šī ierīce",
+      "eidScan": "Telefons",
+      "eparakstsMobile": "Telefona lietotne",
+      "eparakstsMobileEseal": "E-zīmogs",
+      "csc": "Mākonis"
+    },
+    "methodDesc": {
+      "webEid": "Parakstiet ar ID karti lasītājā. Apstipriniet ar PIN 2.",
+      "eidScan": "Skenējiet savu eID ar eID Scan lietotni un apstipriniet tur.",
+      "eparakstsMobile": "Apstipriniet parakstu eParaksts Mobile lietotnē telefonā.",
+      "eparakstsMobileEseal": "Pielietojiet organizācijas e-zīmogu, izmantojot eParaksts Mobile.",
+      "csc": "Autorizējiet attālinātu parakstu ar savu mākoņa sertifikātu."
+    },
+    "means": {
+      "eyebrow": "Ko tas nozīmē",
+      "body": "Jūs pielietojat kvalificētu elektronisko parakstu Long-Term (LT) profilā. Saskaņā ar eIDAS tam ir tāds pats juridiskais spēks kā pašrocīgam parakstam visā ES. No jūsu ierīces tiek nosūtīts tikai dokumenta jaucējkods, kur metode to atļauj."
+    },
+    "loaHigh": "LoA High · {method}",
+    "loaHighOnly": "LoA High",
+    "complete": {
+      "finalizing": {
+        "caption": "Kvalificēts paraksts · veidojas",
+        "title": "Pabeidz jūsu parakstīto dokumentu…",
+        "body": "Dokuments tiek aizzīmogots ar jūsu kvalificēto parakstu. Neaizveriet šo logu.",
+        "working": "Zīmogo…"
+      },
+      "validating": {
+        "caption": "Pārbauda parakstu · EU DSS",
+        "title": "Pārbauda jūsu parakstu…",
+        "body": "Neatkarīgi pārbauda zīmogu atbilstoši eIDAS noteikumiem ar EU DSS. Neaizveriet šo logu.",
+        "working": "Pārbauda…"
+      },
+      "pendingSub": "Jūsu kvalificētais paraksts ir pielietots — dokuments ir pilnībā parakstīts un drošs lietošanai. Pārbaude tiek pabeigta fonā.",
+      "statusPending": "PĀRBAUDE NOTIEK",
+      "container": "Parakstīts dokuments",
+      "fileCount": "{n} fails | {n} faili",
+      "pendingBanner": {
+        "title": "Pārbaude vēl tiek pabeigta",
+        "body": "Jūsu paraksts ir pielietots un konteiners ir gatavs lietošanai. Neatkarīgā eIDAS pārbaude neatgriezās laikā — tā tiks pabeigta automātiski, un atskaite būs pieejama drīzumā."
+      },
+      "retry": "Pārbaudīt vēlreiz",
+      "pendingNote": "Pārbaudes atskaite būs pieejama, tiklīdz pārbaude pabeigta"
+    },
+    "auth": {
+      "card": {
+        "title": "Ievietojiet karti un apstipriniet",
+        "body": "Pārliecinieties, ka jūsu eID karte ir lasītājā, tad apstipriniet pieprasījumu pārlūka drošības uzaicinājumā. Kods nav jāievada.",
+        "step1": "Karte lasītājā",
+        "step2": "Apstipriniet pārlūka uzaicinājumā"
+      },
+      "remote": {
+        "title": "Notiek paraksta autorizēšana",
+        "body": "Apstipriniet pieprasījumu savā eID lietotnē vai pakalpojuma sniedzēja lapā. Šis ekrāns turpināsies pats, tiklīdz būsiet pabeidzis."
+      },
+      "confirm": {
+        "title": "Apstipriniet savā lietotnē",
+        "body": "Atveriet {method} savā tālrunī un pārbaudiet, vai kontrolkods sakrīt."
+      }
+    },
+    "confirm": {
+      "codeLabel": "Kontrolkods",
+      "waiting": "Gaidām apstiprinājumu…",
+      "expires": "Beidzas pēc {time}",
+      "done": "Apstiprināju lietotnē",
+      "help": "Neizdodas? Atveriet eID Scan lietotni savā tālrunī.",
+      "cancel": "Atcelt parakstīšanu"
+    },
+    "declined": {
+      "title": "Parakstīšana atcelta",
+      "body": "Pieprasījums tika atcelts vai noraidīts. Nekas nav parakstīts — jūsu dokuments tiek saglabāts kā melnraksts."
+    },
+    "phase": {
+      "reading-card": "Nolasa sertifikātu no kartes...",
+      "preparing": "Sagatavo parakstīšanas uzdevumu...",
+      "awaiting-card": "Apstipriniet parakstu uz savas kartes (PIN 2)...",
+      "awaitingCardHint": "Jūsu kartes lietotne lūgs apstiprināt parakstu.",
+      "redirecting": "Pārvirza jūs, lai autorizētu parakstu..."
+    },
+    "verdict": {
+      "passed": "Derīgs",
+      "failed": "Nederīgs",
+      "indeterminate": "Nenoteikts"
+    },
+    "field": {
+      "signer": "Parakstījis",
+      "level": "Uzticamība",
+      "format": "Formāts",
+      "organization": "Organizācija",
+      "serial": "Sērijas / reģistrācijas nr.",
+      "hide": "Slēpt",
+      "containerForm": "Konteiners",
+      "signingTime": "Parakstīts",
+      "revocationTime": "Atsaukšanas dati",
+      "maxValidity": "Derīgs līdz",
+      "signedFiles": "Parakstītie faili",
+      "none": "Nav"
+    },
+    "done": {
+      "title": "Parakstīts un apzīmogots",
+      "subtitle": "Jūsu kvalificētais paraksts ir pielietots un konteiners ir gatavs.",
+      "download": "Lejupielādēt parakstīto dokumentu",
+      "again": "Atpakaļ uz dokumentiem",
+      "backToDocument": "Atpakaļ pie dokumenta",
+      "viewReport": "Skatīt validācijas atskaiti"
+    },
+    "error": {
+      "binding": "Šī metode neatbilst tam, kā pieslēdzāties. Pieslēdzieties vēlreiz ar atbilstošo metodi, lai to izmantotu.",
+      "notEligible": "Vēl nav jūsu kārta parakstīt. Vispirms jāparaksta iepriekšējam parakstītājam - varēsiet parakstīt, kad pienāks jūsu kārta.",
+      "chainAdvanced": "Cits parakstītājs parakstīja šo dokumentu, kamēr jūs parakstījāt. Pārskatiet atjaunoto dokumentu un parakstiet vēlreiz.",
+      "inProgress": "Šo dokumentu pašlaik paraksta cita puse. Lūdzu, uzgaidiet mirkli un mēģiniet vēlreiz.",
+      "invalid": "Parakstīšanas pieprasījums bija nepilnīgs. Lūdzu, mēģiniet vēlreiz.",
+      "notFound": "Parakstīšanas uzdevums vai dokuments netika atrasts.",
+      "card": "Parakstīšanu ar karti neizdevās pabeigt. Lūdzu, mēģiniet vēlreiz.",
+      "cardMissing": "Web eID paplašinājums vai lietotne netika atrasta. Instalējiet to, pievienojiet kartes lasītāju un mēģiniet vēlreiz.",
+      "noDigest": "Pakalpojums neatgrieza neko parakstāmu. Lūdzu, mēģiniet vēlreiz.",
+      "failed": "Parakstīšana neizdevās. Lūdzu, mēģiniet vēlreiz.",
+      "timeout": "Parakstīšana aizņem ilgāku laiku nekā paredzēts. Drīz pārbaudiet savus dokumentus.",
+      "generic": "Parakstīšanu neizdevās pabeigt. Lūdzu, mēģiniet vēlreiz.",
+      "cancelled": "Parakstīšana tika atcelta vai to neizdevās autorizēt. Lūdzu, mēģiniet vēlreiz."
+    },
+    "inProgressWait": {
+      "waiting": "Šo dokumentu paraksta cita puse — gaidām, kad viņi pabeigs…",
+      "ready": "Otra puse parakstīja pirmā — tagad parakstīsiet atjaunināto dokumentu.",
+      "signNow": "Parakstīt tagad"
+    },
+    "retry": "Mēģināt vēlreiz",
+    "result": {
+      "title": "Validācijas atskaite",
+      "asOf": "uz {time}",
+      "sub": {
+        "passed": "Kvalificēts · visi paraksti derīgi",
+        "failed": "Nederīgs · vismaz viens paraksts neizturēja pārbaudi",
+        "indeterminate": "Nenoteikts · derīgums nav apstiprināts"
+      },
+      "downloadReport": "Lejupielādēt atskaiti",
+      "evidencePackage": "Pierādījumu pakotne",
+      "availableSoon": "Drīzumā pieejams",
+      "policy": "Validācijas politika",
+      "policyValue": "Noklusējuma (QTSP)",
+      "service": "Pakalpojums",
+      "serviceValue": "EU DSS",
+      "includedFiles": "Iekļautie faili",
+      "signatures": "Paraksti",
+      "indication": "Indikācija",
+      "formatLevel": "Formāts un līmenis",
+      "revocation": "Atsaukšana (OCSP)",
+      "warningsErrors": "Brīdinājumi · kļūdas",
+      "pno": "Personas identifikācijas kods (PNO)",
+      "orgId": "Organizācijas identifikators",
+      "role": "Parakstītājs",
+      "revealId": "Atklāt identifikācijas kodu",
+      "revealNote": "Rādīts pēc pieprasījuma - netiek glabāts vai pārsūtīts. Tā parādīšana ir tikai vietēja skatīšanās darbība un netiek reģistrēta.",
+      "meansLabel": "Ko tas nozīmē",
+      "means": {
+        "passed": "Šis ir kvalificēts elektroniskais paraksts. Saskaņā ar eIDAS tam ir tāds pats juridiskais spēks kā pašrocīgam parakstam visā ES. Tas ir ilgtermiņa (LT) līmenī, tāpēc paliek neatkarīgi pārbaudāms paraksta sertifikāta darbības laikā; ar kvalificētu saglabāšanu tas var palikt pārbaudāms daudz ilgāk.",
+        "failed": "Vismaz viens paraksts nav derīgs. Dokumenta integritāti vai paraksta sertifikātu neizdevās apstiprināt, tāpēc šo failu nevajadzētu uzskatīt par kvalificētu pierādījumu. Pieprasiet pareizi parakstītu kopiju no sūtītāja.",
+        "indeterminate": "Derīgumu neizdevās pilnībā noteikt - parasti tāpēc, ka atsaukšanas vai uzticamības enkura dati nebija pieejami validācijas laikā. Tas nav derīguma apstiprinājums. Mēģiniet validēt vēlāk vai pieprasiet dokumenta ilgtermiņa (LTA) versiju."
+      },
+      "auditNote": "Reģistrēts neviltojams audita pieraksts · pieejama pārnēsājama pierādījumu pakotne"
+    }
+  },
+  "newSigning": {
+    "title": "Jauns paraksts",
+    "stepCount": "Solis {n} no {total}",
+    "step": {
+      "document": "Augšupielāde",
+      "review": "Pārskats",
+      "recipients": "Saņēmēji",
+      "method": "Metode",
+      "authenticate": "Autentificēties",
+      "complete": "Pabeigts",
+      "send": "Nosūtīt"
+    },
+    "document": {
+      "heading": "Augšupielādējiet dokumentus",
+      "sub": "Pievienojiet failus, kurus vēlaties parakstīt. PDF faili tiek parakstīti ar PAdES; citi faili tiek ietverti ASiC-E konteinerā ar XAdES.",
+      "dropTitle": "Ievelciet failus šeit vai izvēlieties",
+      "dropHint": "PDF, DOCX vai attēli · pievienojiet vairākus failus, lai parakstītu tos kopā vienā konteinerā",
+      "browse": "Izvēlēties failus",
+      "uploading": "Notiek augšupielāde...",
+      "err": {
+        "generic": "Augšupielāde neizdevās. Lūdzu, mēģiniet vēlreiz.",
+        "malformed": "Šo failu nevar pieņemt — tas neatbilst savam faila tipam vai ir bojāts. Pārbaudiet failu un mēģiniet vēlreiz.",
+        "tooLarge": "Fails ir par lielu. Viena faila limits ir 25 MB.",
+        "infected": "Failu noraidīja ļaunatūras pārbaude.",
+        "cannotBundle": "Šos failus nevar apvienot vienā konteinerā.",
+        "cannotBundleFile": "{name} nevar pievienot šim komplektam — tas tika noņemts; pārējie faili joprojām ir pievienoti."
+      },
+      "order": "secība {n}",
+      "remove": "Noņemt failu",
+      "alreadySigned": "Šajā failā jau ir paraksts — varat pievienot arī savu.",
+      "wrapTitle": "Ietvert ASiC-E konteinerā",
+      "wrapSub": "Parakstiet šo PDF kā XAdES konteinerā, nevis kā PDF pašparakstu.",
+      "wrapNote": "Izslēgts paraksta pašu PDF (PAdES); ieslēgts ietver to ASiC-E konteinerā un paraksta to (XAdES).",
+      "ttlNote": "Šifrēts glabātuvē · automātiski dzēšas pēc glabāšanas perioda.",
+      "continue": "Turpināt uz pārskatu",
+      "wrapForcedNote": "Vairāki dokumenti vienmēr tiek parakstīti kopā vienā ASiC-E konteinerā — natīvs PDF (PAdES) paraksts attiecas tikai uz vienu PDF."
+    },
+    "review": {
+      "heading": "Pārskatiet, ko parakstīsiet",
+      "sub": "Tieši to segs jūsu paraksts.",
+      "wysiwys": "Ko redzat, to parakstāt.",
+      "previewEyebrow": "{name} · priekšskatījums",
+      "download": "Lejupielādēt pārskatīšanai",
+      "continue": "Viss pareizi - turpināt",
+      "preview": {
+        "loading": "Sagatavo priekšskatījumu…",
+        "retry": "Mēģināt vēlreiz",
+        "unsupported": "Šo faila veidu šeit nevar priekšskatīt. Lejupielādējiet to, lai pirms parakstīšanas izlasītu visu saturu.",
+        "pageOf": "{name} · {n}. lapa no {total}",
+        "pageAlt": "{name} priekšskatījums, {n}. lapa no {total}",
+        "pageError": "Šo lapu neizdevās ielādēt. Lejupielādējiet dokumentu, lai to pārskatītu.",
+        "prev": "Iepriekšējā",
+        "next": "Nākamā",
+        "downloadHint": "Vēlaties izlasīt visu?"
+      },
+      "filesLabel": "Pārskatāmie faili"
+    },
+    "recipients": {
+      "heading": "Saņēmēji un secība",
+      "sub": "Parakstiet pats vai uzaiciniet līdzparakstītāju tam pašam konteineram.",
+      "youRole": "Parakstītājs · LoA {loa}",
+      "signerTag": "PARAKSTĪTĀJS",
+      "add": "Pievienot līdzparakstītāju",
+      "remove": "Noņemt līdzparakstītāju",
+      "label": "Līdzparakstītāja identitātes kods",
+      "placeholder": "PNOLV-XXXXXX-XXXXX",
+      "error": "Ievadiet līdzparakstītāja identitātes kodu (piem., PNOLV-XXXXXX-XXXXX), lai parakstīt varētu īstā persona.",
+      "orderLabel": "Parakstīšanas secība",
+      "order": {
+        "sequential": "Secīga",
+        "parallel": "Paralēla"
+      },
+      "orderHint": {
+        "sequential": "Parakstītāji paraksta cits pēc cita, noteiktā secībā.",
+        "parallel": "Parakstītāji var parakstīt jebkurā secībā."
+      },
+      "tierNote": "Jūsu bezmaksas plāns iekļauj vienu līdzparakstītāju. Vairāk līdzparakstītāju un lomu ir Premium un Business plānā.",
+      "notifyNote": "Līdzparakstītājs paraksta savā sesijā — aploksne parādās viņa parakstīšanas iesūtnē, kad viņš pieslēdzas ar atbilstošo eID. E-pasta uzaicinājumi pienāks, kad būs iespējoti paziņojumi.",
+      "continue": "Turpināt"
+    },
+    "send": {
+      "heading": "Pārskatīt un nosūtīt",
+      "sub": "Pārbaudiet informāciju un nosūtiet aploksni parakstīšanai.",
+      "document": "Dokuments",
+      "signers": "Parakstītāji",
+      "you": "Jūs",
+      "order": "Secība",
+      "container": "Konteiners",
+      "containerValuePades": "PAdES (pašparaksts PDF)",
+      "containerValueAsice": "ASiC-E (XAdES)",
+      "send": "Nosūtīt parakstīšanai",
+      "sending": "Notiek nosūtīšana...",
+      "failed": "Aploksni neizdevās nosūtīt. Lūdzu, mēģiniet vēlreiz.",
+      "bundleNote": "{n} faili, iesaiņoti vienā ASiC-E konteinerā"
+    },
+    "selfOnly": {
+      "note": "Jūs esat vienīgais parakstītājs - turpiniet tieši uz parakstīšanu.",
+      "continue": "Turpināt uz parakstīšanu"
+    }
+  },
+  "envelopes": {
+    "backToDocuments": "Atpakaļ uz dokumentiem",
+    "status": {
+      "inProgress": "Procesā · parakstīts {signed} no {total}"
+    },
+    "concurrent": {
+      "inProgress": "Cits parakstītājs šobrīd paraksta šo dokumentu. Ja parakstīsiet vienlaikus, iespējams, būs jāpārskata atjaunotais dokuments un jāparaksta vēlreiz."
+    },
+    "signers": "Parakstītāji · secībā",
+    "signersParallel": "Parakstītāji · jebkurā secībā",
+    "slot": {
+      "you": "Jūs",
+      "coSigner": "Līdzparakstītājs",
+      "signed": "Parakstīts",
+      "inProgress": "Procesā",
+      "declined": "Noraidīts",
+      "turn": "Viņu kārta",
+      "yourTurn": "Jūsu kārta",
+      "waiting": "Gaida"
+    },
+    "meta": {
+      "order": "Secība"
+    },
+    "badge": {
+      "yourTurn": "Jūsu kārta",
+      "progress": "Parakstīts {signed}/{total}",
+      "waiting": "Gaida",
+      "completed": "Pabeigta",
+      "declined": "Noraidīta",
+      "draft": "Melnraksts"
+    },
+    "order": {
+      "sequential": "Secīga",
+      "parallel": "Paralēla"
+    },
+    "actions": {
+      "ownerNote": "Jūs esat īpašnieks",
+      "cancel": "Atcelt aploksni",
+      "cancelConfirm": "Atcelt šo aploksni visiem?",
+      "cancelYes": "Atcelt aploksni",
+      "cancelNo": "Paturēt",
+      "cancelling": "Notiek atcelšana...",
+      "sign": "Pārskatīt un parakstīt",
+      "decline": "Noraidīt...",
+      "declineConfirm": "Noraidīt šīs aploksnes parakstīšanu?",
+      "declineYes": "Noraidīt",
+      "declineNo": "Paturēt",
+      "declining": "Notiek noraidīšana...",
+      "notYourTurn": "Varēsiet parakstīt, kad būs parakstījuši iepriekšējie parakstītāji."
+    },
+    "error": {
+      "action": "Kaut kas neizdevās. Lūdzu, mēģiniet vēlreiz.",
+      "invalidDocument": "Šo dokumentu nevar arhivēt — tas nav derīgs parakstīts dokuments.",
+      "reference": "Atsauce: {id}"
+    }
+  },
+  "hub": {
+    "eyebrow": "Dokuments",
+    "loading": "Ielādē dokumentu…",
+    "details": "Detaļas",
+    "actions": "Darbības",
+    "soon": "Drīzumā",
+    "preSigned": "Šajā failā jau ir paraksts — varat pievienot arī savu.",
+    "ttlNote": "Glabāšana ir īslaicīga — parakstiet vai lejupielādējiet, pirms beidzas laiks.",
+    "field": {
+      "file": "Fails",
+      "format": "Formāts",
+      "signatures": "Paraksti",
+      "signaturesYes": "Ir",
+      "signaturesNo": "Vēl nav",
+      "size": "Izmērs",
+      "uploaded": "Augšupielādēts",
+      "autoDelete": "Automātiski dzēsīs pēc"
+    },
+    "act": {
+      "sign": "Sākt parakstīšanu",
+      "addCoSigners": "Pievienot līdzparakstītājus",
+      "validate": "Pārbaudīt parakstus",
+      "archiveTs": "Pievienot arhīva laika zīmogu",
+      "downloadOriginal": "Lejupielādēt oriģinālu",
+      "downloadSigned": "Lejupielādēt parakstīto dokumentu",
+      "delete": "Dzēst",
+      "archiveTsDone": "Arhīva laika zīmogs pievienots",
+      "archiving": "Pievieno arhīva laika zīmogu…",
+      "validating": "Pārbauda…",
+      "revalidate": "Pārbaudīt atkārtoti",
+      "viewReport": "Skatīt validācijas atskaiti"
+    },
+    "deleteConfirm": "Dzēst šo dokumentu? Šo darbību nevar atsaukt.",
+    "deleteYes": "Jā, dzēst",
+    "deleteNo": "Paturēt",
+    "deleting": "Dzēš…",
+    "audit": "Katra piekļuve šim dokumentam tiek reģistrēta",
+    "preview": "Priekšskatījums",
+    "kind": {
+      "container": "ASiC-E konteiners",
+      "pdf": "PDF"
+    },
+    "filesInside": "{n} fails iekšā | {n} faili iekšā",
+    "contents": "Saturs · {n} fails | Saturs · {n} faili",
+    "showAllSigners": "Rādīt visus {n} parakstītājus",
+    "showAllFiles": "Rādīt visus {n} failus",
+    "showFewer": "Rādīt mazāk",
+    "trailShowAll": "Rādīt visu",
+    "trailFold": "Sakļaut",
+    "downloadFile": "Lejupielādēt {name}",
+    "archiveNeedsValidation": "Arhīva laika zīmogs kļūst pieejams, kad pārbaude ir sekmīga.",
+    "downloadFrozen": "Notiek parakstīšana — dokuments būs pieejams lejupielādei, kad visas puses būs atbildējušas.",
+    "expiredGone": "Krātuve tika dzēsta, kad beidzās glabāšanas termiņš. Faili ir zuduši — ieraksts saglabājas un ir pieejams vēsturē.",
+    "expiredGoneLink": "Atvērt vēsturi",
+    "validating": {
+      "caption": "Pārbauda parakstu · EU DSS",
+      "title": "Pārbauda parakstu…",
+      "body": "Neatkarīga pārbaude pret eIDAS prasībām ar EU DSS — tas var brīdi aizņemt."
+    }
+  },
+  "history": {
+    "eyebrow": "Darbvieta · Vēsture",
+    "title": "Vēsture",
+    "subtitle": "Ieraksti tiek glabāti 90 dienas pēc krātuves dzēšanas. Faili ir dzēsti — ieraksts paliek.",
+    "loading": "Ielādē vēsturi…",
+    "col": {
+      "document": "Dokuments",
+      "outcome": "Iznākums",
+      "destroyed": "Krātuve dzēsta"
+    },
+    "outcome": {
+      "completed": "Pabeigts",
+      "expired": "Beidzies termiņš",
+      "removed": "Noņemts"
+    },
+    "sub": {
+      "signed": "parakstīts šeit",
+      "arrivedSigned": "saņemts parakstīts"
+    },
+    "empty": {
+      "title": "Šeit vēl nekā nav",
+      "body": "Kad dokumenta glabāšanas laiks beidzas, tā ieraksts uz laiku nonāk šeit."
+    },
+    "remove": "Noņemt ierakstu",
+    "removeConfirm": "Noņemt?",
+    "newer": "Jaunāki",
+    "older": "Vecāki",
+    "note": "Šeit neko nevar lejupielādēt, parakstīt vai pārbaudīt — krātuve tika dzēsta, kad beidzās glabāšanas laiks. Platformas audita ieraksti ir paliekošais pierādījums; failu, kas joprojām ir pie jums, var pārbaudīt sadaļā Pārbaudīt. Ieraksti tiek automātiski noņemti pēc 90 dienām."
+  },
+  "trail": {
+    "label": "Audita taka",
+    "uploaded": "Dokuments augšupielādēts",
+    "existingSignature": "Augšupielādē atklāts esošs paraksts",
+    "signed": "Parakstīts un apzīmogots",
+    "created": "Aploksne izveidota",
+    "sent": "Nosūtīts parakstīšanai",
+    "signedBy": "Parakstīja {name}",
+    "declinedBy": "Noraidīja {name}",
+    "waiting": "Gaida parakstu",
+    "completed": "Aploksne pabeigta — visi paraksti pievienoti",
+    "cancelled": "Aploksne atcelta",
+    "validated": "Paraksti pārbaudīti",
+    "archived": "Pievienots kvalificēts arhīva laika zīmogs"
+  },
+  "common": {
+    "loading": "Notiek ielāde...",
+    "signOut": "Iziet",
+    "language": "Valoda",
+    "cancel": "Atcelt",
+    "continue": "Turpināt",
+    "back": "Atpakaļ",
+    "close": "Aizvērt"
+  },
+  "errors": {
+    "generic": "Kaut kas neizdevās. Lūdzu, mēģiniet vēlreiz.",
+    "session": "Jūsu sesija ir beigusies. Lūdzu, pieslēdzieties vēlreiz.",
+    "upstream": "Pakalpojums īslaicīgi nav pieejams. Lūdzu, mēģiniet vēlāk."
+  },
+  "notFound": {
+    "title": "Lapa nav atrasta",
+    "body": "Meklētā lapa neeksistē.",
+    "home": "Uz darbvirsmu"
+  },
+  "accessibility": {
+    "title": "Pieejamības paziņojums",
+    "intro": "signbyte apņemas nodrošināt atbilstību WCAG 2.1 līmenim AA.",
+    "conformance": "Šis pakalpojums ir veidots tā, lai to varētu lietot ar tastatūru, tas ir saderīgs ar palīgtehnoloģijām un lasāms, nepaļaujoties tikai uz krāsu.",
+    "feedback": "Ja saskaraties ar pieejamības šķērsli, lūdzu, sazinieties ar atbalstu, lai mēs to novērstu."
+  },
+  "orderable": {
+    "listLabel": "Vienumi parakstīšanas secībā",
+    "rowLabel": "{name}, pozīcija {position} no {total}. Alt plus bulttaustiņi, lai pārvietotu."
+  },
+  "landing": {
+    "nav": {
+      "label": "Vietne",
+      "product": "Produkts",
+      "trust": "Uzticamība",
+      "compliance": "Atbilstība"
+    },
+    "start": "Sākt parakstīt",
+    "verify": "Pārbaudīt dokumentu",
+    "soon": "drīzumā",
+    "hero": {
+      "eyebrow": "Kvalificēti elektroniskie paraksti · eIDAS",
+      "title": "Paraksti, pārbaudi un saglabā — uzticamā Eiropas veidā.",
+      "lead": "Kvalificēti paraksti {loa} līmenī mazāk nekā minūtē, jebkurā ierīcē. Viss uzticamības dzīvescikls — parakstīšana, pārbaude, saglabāšana un piegāde — bez piesaistes vienam pakalpojumu sniedzējam."
+    },
+    "mock": {
+      "qes": "Kvalificēts elektroniskais paraksts · QES",
+      "format": "Formāts",
+      "signed": "Parakstīts",
+      "container": "Konteiners",
+      "validUntil": "Derīgs līdz"
+    },
+    "methods": {
+      "label": "Darbojas ar jūsu nacionālo eID",
+      "eparakstsMobile": "eParaksts Mobile",
+      "eidCard": "eID karte",
+      "eidScan": "eID Scan",
+      "cloudEseal": "Mākoņa e-zīmogs",
+      "csc": "CSC attālinātā parakstīšana",
+      "eudi": "EUDI maks"
+    },
+    "lifecycle": {
+      "eyebrow": "Viss uzticamības dzīvescikls",
+      "title": "Ne tikai parakstīšana. Katrs uzticamības posms vienuviet.",
+      "lead": "Vairums rīku apstājas pie paraksta. Mēs dokumentu pavadām cauri visai tā juridiskajai dzīvei — un ikviens var neatkarīgi pārbaudīt rezultātu.",
+      "sign": {
+        "title": "Parakstīt",
+        "body": "QES un QESeal LT profilā. PAdES, XAdES, ASiC-E. Viens vai vairāki parakstītāji."
+      },
+      "validate": {
+        "title": "Pārbaudīt",
+        "body": "LTA līmeņa atskaites ar EU DSS. Ikviens var pārbaudīt dokumentu un izlasīt rezultātu."
+      },
+      "preserve": {
+        "title": "Saglabāt",
+        "body": "Arhīva laika zīmogi jau šodien; kvalificēta ilgtermiņa saglabāšana ar automātisku pārarhivēšanu"
+      },
+      "deliver": {
+        "title": "Piegādāt",
+        "body": "Kvalificēta reģistrētā piegāde (QERDS) ar nosūtīšanas un saņemšanas apliecinājumu."
+      }
+    },
+    "pillars": {
+      "eyebrow": "Kāpēc {brand}",
+      "title": "Vadošie, ne tikai atbilstoši.",
+      "inclusive": {
+        "title": "Ērti un iekļaujoši",
+        "body": "Parakstiet mazāk nekā minūtē jebkurā ierīcē. WCAG 2.1 AA, vairākas valodas, asistētas un zema pieslēguma plūsmas."
+      },
+      "qualified": {
+        "title": "Kvalificēts pēc noklusējuma",
+        "body": "Katrs paraksts ir LoA High, QES līmeņa LT profilā — tā juridiskā nozīme paskaidrota vienkāršā valodā."
+      },
+      "agnostic": {
+        "title": "Neatkarīgs no metodes un sniedzēja",
+        "body": "Daudzas eID metodes, vairāki QTSP. Pārrobežu un EUDI maka gatavība — nekad viens atteices punkts."
+      },
+      "private": {
+        "title": "Privātums pēc uzbūves",
+        "body": "Tikai jaucējkods, kur metode to ļauj. Īslaicīga glabāšana, un jūsu personas kods nekad netiek rādīts bez vajadzības."
+      },
+      "transparent": {
+        "title": "Uzticamības caurspīdīgums",
+        "body": "Redziet tieši to, ko parakstāt. Saņēmēji saprot, ko paraksts nozīmē un vai tas ir derīgs."
+      },
+      "platform": {
+        "title": "Platforma, ne tikai portāls",
+        "body": "Iegulstama, API-pirmā pieeja, bagātas darbplūsmas. Veidnes, lomas un tīmekļa āķi organizācijām."
+      }
+    },
+    "trust": {
+      "eyebrow": "Ko redzi, to paraksti",
+      "title": "Zini, ko tieši paraksti — un ko tas nozīmē.",
+      "lead": "Pirms apstiprināšanas apskatiet precīzu dokumentu. Pēc tam katram parakstam ir vienkāršā valodā izklāstīta juridiskā iedarbība un tas, cik ilgi to var pārbaudīt.",
+      "surfaced": "Parakstītājs, formāts, līmenis, laika zīmogi un atsaukšanas laiks — viss redzams.",
+      "reveal": "Personas kods tiek atklāts tikai ar apzinātu darbību — parādīts, nekad saglabāts vai pārsūtīts.",
+      "public": "Publiska, kopīgojama pārbaude — pilns konts nav vajadzīgs.",
+      "legalLabel": "Juridiskā nozīme",
+      "legalQes": "kvalificēts elektroniskais paraksts",
+      "legalBody": "Šis ir {qes}. Saskaņā ar eIDAS tam ir tāds pats juridiskais spēks kā pašrocīgam parakstam visā ES, un tas ir pārbaudāms līdz {date}.",
+      "jurisdiction": "Jurisdikcija",
+      "assurance": "Uzticamības līmenis",
+      "warnings": "Brīdinājumi",
+      "errors": "Kļūdas"
+    },
+    "compliance": {
+      "residency": "ES datu rezidence"
+    },
+    "cta": {
+      "title": "Uzticamākais veids, kā parakstīt Eiropā.",
+      "lead": "Parakstiet savu pirmo dokumentu mazāk nekā minūtē — kvalificēti, ar pārbaudāmu rezultātu uz visiem laikiem."
+    },
+    "footer": {
+      "blurb": "Eiropas uzticamības platforma. Kvalificēta elektroniskā parakstīšana, pārbaude, saglabāšana un piegāde — uz sertificētas QTSP infrastruktūras.",
+      "product": "Produkts",
+      "trust": "Uzticamība",
+      "developers": "Izstrādātājiem",
+      "accessibility": "Piekļūstamība",
+      "embeddable": "Iegulstama parakstīšana",
+      "copyright": "© 2026 signbyte · Radīts Baltijā Eiropai",
+      "crypto": "Kriptogrāfiju neveidojam paši — tā ir uzticēta QTSP caur EU DSS"
+    }
+  }
+}
