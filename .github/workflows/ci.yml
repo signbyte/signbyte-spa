@@ -1,0 +1,45 @@
+# CI for the signbyte web UI: install from the lockfile, then run the same gate a
+# developer runs locally — typecheck, tests, build. The build runs as separate steps
+# rather than one script so a red run names which stage failed without opening the
+# log. The built bundle is kept as a run artifact so every green run holds the exact
+# static files it produced; the bundle a self-hoster deploys is published on a
+# GitHub release (release.yml), not here.
+name: ci
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc      # single source of truth
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Keep the built bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: signbyte-spa-dist-${{ github.sha }}
+          path: dist/
+          retention-days: 14

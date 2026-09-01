@@ -1,0 +1,762 @@
+{
+  "app": {
+    "name": "signbyte",
+    "tagline": "Sign, validate and preserve - the trusted European way."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "documents": "Documents",
+    "newSignature": "New signature",
+    "verify": "Verify",
+    "backToSite": "Back to site",
+    "history": "History"
+  },
+  "shell": {
+    "workspace": "Citizen workspace",
+    "storageTitle": "Ephemeral storage",
+    "storageNote": "Encrypted, ephemeral storage - documents auto-delete after 24 hours.",
+    "search": "Search documents",
+    "primaryNav": "Primary navigation",
+    "skipToContent": "Skip to main content",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "switchLanguage": "Switch language"
+  },
+  "login": {
+    "title": "Sign in to {brand}",
+    "subtitle": "Use your national eID. We never see a password or a signing key — you confirm in your own eID app or with your card.",
+    "method": {
+      "eparakstsMobile": "eParaksts Mobile",
+      "eidScan": "eID Scan",
+      "webEid": "eID card"
+    },
+    "methodDesc": {
+      "eparakstsMobile": "Approve in the eParaksts mobile app",
+      "webEid": "Use your eID card in this browser",
+      "eidScan": "Scan your eID card with your phone"
+    },
+    "loaNote": "You'll be redirected to your eID provider at LoA High, then returned here.",
+    "verifyCta": "Verify a document",
+    "verifyNote": "no account needed",
+    "signingIn": "Signing you in…",
+    "returning": {
+      "body": "Confirm in {method} if prompted. We'll take you to your dashboard automatically."
+    },
+    "failedTitle": "Sign-in didn't complete",
+    "failedBody": "The request was cancelled or timed out in your eID app. No session was created.",
+    "retry": "Try again"
+  },
+  "callback": {
+    "completing": "Completing sign-in…",
+    "completingBody": "This only takes a moment — we'll take you to your dashboard automatically.",
+    "failed": "We could not complete your sign-in.",
+    "cancelled": "Sign-in was cancelled. You can try again when you are ready.",
+    "idpError": "The identity provider had a problem. Please try again."
+  },
+  "verify": {
+    "heading": "Verify a document",
+    "sub": "Check who signed a document and whether the signatures are valid. Works for signed PDF and ASiC-E (.asice, .edoc) files — no account needed.",
+    "dropTitle": "Drop a signed document here or click to browse",
+    "dropHint": "Signed PDF or ASiC-E container, up to 25 MB. The file is checked and immediately discarded — nothing is stored.",
+    "browse": "Choose a file to verify",
+    "another": "Verify another document",
+    "err": {
+      "generic": "Verification failed. Please try again.",
+      "notSigned": "This document carries no signature — there is nothing to verify.",
+      "unsupportedType": "Only a signed PDF or ASiC-E container (.pdf, .asice, .edoc, .sce) can be verified.",
+      "malformed": "This file can't be read as a signed document — it may be damaged or mislabeled.",
+      "tooLarge": "This file is too large. The limit is 25 MB.",
+      "rateLimited": "Too many verification requests — please wait a moment and try again.",
+      "upstream": "The validation service is temporarily unavailable. Please try again shortly."
+    },
+    "validateNext": "Validate next",
+    "checking": "Checking signatures…",
+    "checkingHint": "Validated against the EU trust lists — usually a few seconds.",
+    "checkingStage": "Validating signatures · EU DSS",
+    "working": "Validating…"
+  },
+  "extMissing": {
+    "title": "Browser extension not found",
+    "body": "To sign with your eID card you need the national eID software and its browser extension installed and enabled.",
+    "needTitle": "What you need",
+    "item1": "eID software (eParaksts / national middleware)",
+    "item2": "The browser signing extension, enabled",
+    "item3": "A card reader with your eID card inserted",
+    "install": "Install the eID software",
+    "another": "Choose another method",
+    "retry": "I've installed it — retry"
+  },
+  "home": {
+    "title": "Home",
+    "awaiting": "Awaiting your signature",
+    "needsAttention": "Needs your attention",
+    "recent": "Recent activity",
+    "empty": "Nothing needs your attention right now.",
+    "recentEmpty": "Your recent signing activity will appear here.",
+    "loading": "Loading your activity...",
+    "newSignature": "Start a new signature",
+    "viewAll": "View all",
+    "envelope": {
+      "progress": "{signed} of {total} signed",
+      "yourTurn": "It's your turn to sign",
+      "waiting": "Waiting on other signers",
+      "inProgress": "In progress",
+      "completed": "Fully signed",
+      "cancelled": "Cancelled",
+      "open": "Open"
+    }
+  },
+  "documents": {
+    "title": "Documents",
+    "subtitle": "Everything you've uploaded, signed or been invited to sign.",
+    "stat": {
+      "documents": "Documents",
+      "awaiting": "Awaiting you",
+      "completed": "Completed",
+      "storage": "Storage TTL"
+    },
+    "filter": {
+      "all": "All",
+      "drafts": "Drafts",
+      "awaiting": "Awaiting",
+      "completed": "Completed",
+      "received": "Uploaded",
+      "signed": "Signed"
+    },
+    "upload": {
+      "ttlNote": "Encrypted at rest. Documents auto-delete after 24 hours; co-signing rolls the time-to-live forward. You can delete a document manually at any time."
+    },
+    "col": {
+      "document": "Document",
+      "status": "Status",
+      "parties": "Parties",
+      "size": "Size",
+      "ttl": "Time to live",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "status": {
+      "received": "Uploaded",
+      "draft": "Draft",
+      "awaiting": "Awaiting",
+      "signing": "In signing",
+      "signed": "Signed",
+      "completed": "Completed",
+      "expired": "Expired",
+      "declined": "Declined",
+      "unknown": "Unknown"
+    },
+    "parties": {
+      "you": "You",
+      "multiple": "Multiple signers"
+    },
+    "note": {
+      "declined": "Signing was declined.",
+      "expired": "Storage lapsed — the encrypted bytes were auto-deleted; the validation report is kept."
+    },
+    "ttl": {
+      "expired": "Expired",
+      "remaining": "{time} left",
+      "hours": "{n}h",
+      "days": "{n}d",
+      "none": "—"
+    },
+    "action": {
+      "sign": "Sign",
+      "download": "Download",
+      "delete": "Delete",
+      "confirm": "Delete this document?",
+      "confirmYes": "Delete",
+      "confirmNo": "Keep"
+    },
+    "empty": {
+      "title": "No documents yet",
+      "body": "Start a signature to add your first document.",
+      "cta": "Start a signature",
+      "verify": "Or verify a document",
+      "filtered": "No documents match this filter."
+    },
+    "error": {
+      "title": "We could not load your documents."
+    },
+    "loading": "Loading your documents..."
+  },
+  "signing": {
+    "title": "Sign document",
+    "subtitle": "Choose how to sign. The method must match how you signed in.",
+    "noFlows": "No signing method is available for your sign-in. Sign in again to sign documents.",
+    "chooseSub": "Every method is LoA High and produces a qualified signature.",
+    "sealPicker": "Choose which seal to apply",
+    "signCta": "Sign",
+    "method": {
+      "webEid": "eID card",
+      "eidScan": "eID Scan",
+      "eparakstsMobile": "eParaksts Mobile",
+      "eparakstsMobileEseal": "eParaksts Mobile (e-seal)",
+      "csc": "Cloud signature"
+    },
+    "methodTag": {
+      "webEid": "This device",
+      "eidScan": "Phone",
+      "eparakstsMobile": "Phone app",
+      "eparakstsMobileEseal": "e-Seal",
+      "csc": "Cloud"
+    },
+    "methodDesc": {
+      "webEid": "Sign with the ID-card in your reader. You confirm with PIN 2.",
+      "eidScan": "Scan your eID with the eID Scan app and confirm there.",
+      "eparakstsMobile": "Approve the signature in the eParaksts Mobile app on your phone.",
+      "eparakstsMobileEseal": "Apply your organisation e-seal via eParaksts Mobile.",
+      "csc": "Authorise a remote signature with your cloud certificate."
+    },
+    "means": {
+      "eyebrow": "What this means",
+      "body": "You are applying a Qualified Electronic Signature at the Long-Term (LT) profile. Under eIDAS it carries the same legal effect as a handwritten signature across the EU. Only a document hash leaves your device where the method allows."
+    },
+    "loaHigh": "LoA High · {method}",
+    "loaHighOnly": "LoA High",
+    "complete": {
+      "finalizing": {
+        "caption": "Qualified signature · forming",
+        "title": "Finalizing your signed document…",
+        "body": "Sealing the document with your qualified signature. Keep this window open.",
+        "working": "Sealing…"
+      },
+      "validating": {
+        "caption": "Validating signature · EU DSS",
+        "title": "Validating your signature…",
+        "body": "Independently checking the seal against eIDAS rules via EU DSS. Keep this window open.",
+        "working": "Validating…"
+      },
+      "pendingSub": "Your qualified signature has been applied — the document is fully signed and safe to use. Validation is finishing in the background.",
+      "statusPending": "VALIDATION PENDING",
+      "container": "Signed document",
+      "fileCount": "{n} file | {n} files",
+      "pendingBanner": {
+        "title": "Validation is still finishing",
+        "body": "Your signature is applied and the container is ready to use. The independent eIDAS validation didn't return in time — it will complete automatically and the report will be available shortly."
+      },
+      "retry": "Retry validation",
+      "pendingNote": "Validation report available once validation completes"
+    },
+    "auth": {
+      "card": {
+        "title": "Insert your card & approve",
+        "body": "Make sure your eID card is in the reader, then approve the request in your browser's security prompt. There is no code to type.",
+        "step1": "Card in the reader",
+        "step2": "Approve in your browser's prompt"
+      },
+      "remote": {
+        "title": "Authorising your signature",
+        "body": "Confirm the request in your eID app or on the provider's page. This screen continues on its own when you're done."
+      },
+      "confirm": {
+        "title": "Confirm in your app",
+        "body": "Open {method} on your phone and check the control code matches."
+      }
+    },
+    "confirm": {
+      "codeLabel": "Control code",
+      "waiting": "Waiting for confirmation…",
+      "expires": "Expires in {time}",
+      "done": "I've confirmed in my app",
+      "help": "Having trouble? Open the eID Scan app on your phone.",
+      "cancel": "Cancel signing"
+    },
+    "declined": {
+      "title": "Signing cancelled",
+      "body": "The request was cancelled or rejected. Nothing has been signed — your document is kept as a draft."
+    },
+    "phase": {
+      "reading-card": "Reading your certificate from the card...",
+      "preparing": "Preparing the signing job...",
+      "awaiting-card": "Confirm signing on your card (PIN 2)...",
+      "awaitingCardHint": "Your card app will ask you to approve the signature.",
+      "redirecting": "Redirecting you to authorize the signature..."
+    },
+    "verdict": {
+      "passed": "Valid",
+      "failed": "Invalid",
+      "indeterminate": "Indeterminate"
+    },
+    "field": {
+      "signer": "Signed by",
+      "level": "Assurance",
+      "format": "Format",
+      "organization": "Organisation",
+      "serial": "Serial / registration no.",
+      "hide": "Hide",
+      "containerForm": "Container",
+      "signingTime": "Signed at",
+      "revocationTime": "Revocation data",
+      "maxValidity": "Valid until",
+      "signedFiles": "Signed files",
+      "none": "None"
+    },
+    "done": {
+      "title": "Signed & sealed",
+      "subtitle": "Your qualified signature has been applied and the container is ready.",
+      "download": "Download signed document",
+      "again": "Back to documents",
+      "backToDocument": "Back to document",
+      "viewReport": "View validation report"
+    },
+    "error": {
+      "binding": "This method does not match how you signed in. Sign in again with the matching method to use it.",
+      "notEligible": "It is not your turn to sign yet. An earlier signer needs to sign first — you can sign once it is your turn.",
+      "chainAdvanced": "Another signer signed this document while you were signing. Review the updated document and sign again.",
+      "inProgress": "Another party is signing this document right now. Please wait a moment and try again.",
+      "invalid": "The signing request was incomplete. Please try again.",
+      "notFound": "The signing job or document could not be found.",
+      "card": "The card signing could not be completed. Please try again.",
+      "cardMissing": "The Web eID extension or app was not found. Install it, connect your card reader, and try again.",
+      "noDigest": "The service returned nothing to sign. Please try again.",
+      "failed": "Signing failed. Please try again.",
+      "timeout": "Signing is taking longer than expected. Check your documents shortly.",
+      "generic": "Signing could not be completed. Please try again.",
+      "cancelled": "Signing was cancelled or could not be authorized. Please try again."
+    },
+    "inProgressWait": {
+      "waiting": "Another party is signing this document — waiting for them to finish…",
+      "ready": "The other party signed first — you'll now sign the updated document.",
+      "signNow": "Sign now"
+    },
+    "retry": "Try again",
+    "result": {
+      "title": "Validation report",
+      "asOf": "as of {time}",
+      "sub": {
+        "passed": "Qualified · all signatures valid",
+        "failed": "Invalid · at least one signature failed",
+        "indeterminate": "Indeterminate · validity not confirmed"
+      },
+      "downloadReport": "Download report",
+      "evidencePackage": "Evidence package",
+      "availableSoon": "Available soon",
+      "policy": "Validation policy",
+      "policyValue": "Default (QTSP)",
+      "service": "Service",
+      "serviceValue": "EU DSS",
+      "includedFiles": "Included files",
+      "signatures": "Signatures",
+      "indication": "Indication",
+      "formatLevel": "Format & level",
+      "revocation": "Revocation (OCSP)",
+      "warningsErrors": "Warnings · errors",
+      "pno": "Personal identity code (PNO)",
+      "orgId": "Organisation identifier",
+      "role": "Signer",
+      "revealId": "Reveal identity code",
+      "revealNote": "Shown on request — not stored or transmitted. Revealing it is a local view action only and is not recorded.",
+      "meansLabel": "What this means",
+      "means": {
+        "passed": "This is a Qualified Electronic Signature. Under eIDAS it carries the same legal effect as a handwritten signature across the EU. It is at the Long-Term (LT) level, so it stays independently verifiable for the lifetime of the signing certificate; with qualified preservation it can remain verifiable for far longer.",
+        "failed": "At least one signature is invalid. The document's integrity or the signing certificate could not be confirmed, so this file should not be relied upon as qualified evidence. Request a correctly signed copy from the sender.",
+        "indeterminate": "Validity could not be fully determined — typically because revocation or trust-anchor data was unavailable at validation time. This is not a confirmation of validity. Try validating again later, or request a long-term (LTA) version of the document."
+      },
+      "auditNote": "Tamper-evident audit trail recorded · portable evidence package available"
+    }
+  },
+  "newSigning": {
+    "title": "New signature",
+    "stepCount": "Step {n} of {total}",
+    "step": {
+      "document": "Upload",
+      "review": "Review",
+      "recipients": "Recipients",
+      "method": "Method",
+      "authenticate": "Authenticate",
+      "complete": "Complete",
+      "send": "Send"
+    },
+    "document": {
+      "heading": "Upload documents",
+      "sub": "Add the files you want to sign. PDFs are signed with PAdES; other files are wrapped in an ASiC-E container with XAdES.",
+      "dropTitle": "Drag files here, or browse",
+      "dropHint": "PDF, DOCX or images · add several files to sign them together in one container",
+      "browse": "Browse files",
+      "uploading": "Uploading...",
+      "err": {
+        "generic": "Upload failed. Please try again.",
+        "malformed": "This file can't be accepted — it doesn't match its file type or is damaged. Check the file and try again.",
+        "tooLarge": "This file is too large. The limit per file is 25 MB.",
+        "infected": "This file was rejected by the malware scan.",
+        "cannotBundle": "These files can't be combined into one container.",
+        "cannotBundleFile": "{name} can't join this set — it was removed; your other files are still staged."
+      },
+      "order": "order {n}",
+      "remove": "Remove file",
+      "alreadySigned": "This file already contains a signature — you can still add your own.",
+      "wrapTitle": "Wrap in an ASiC-E container",
+      "wrapSub": "Sign this PDF as XAdES inside a container instead of a native PDF signature.",
+      "wrapNote": "Off signs the PDF itself (PAdES); on wraps it in an ASiC-E container and signs that (XAdES).",
+      "ttlNote": "Encrypted at rest · auto-deletes after its retention window.",
+      "continue": "Continue to review",
+      "wrapForcedNote": "Multiple documents are always signed together in one ASiC-E container — a native PDF (PAdES) signature applies to a single PDF only."
+    },
+    "review": {
+      "heading": "Review what you'll sign",
+      "sub": "This is exactly what your signature will cover.",
+      "wysiwys": "What you see is what you sign.",
+      "previewEyebrow": "{name} · preview",
+      "download": "Download to review",
+      "continue": "Looks correct — continue",
+      "preview": {
+        "loading": "Rendering a preview…",
+        "retry": "Try again",
+        "unsupported": "This file type can't be previewed here. Download it to read the full contents before signing.",
+        "pageOf": "{name} · page {n} of {total}",
+        "pageAlt": "Preview of {name}, page {n} of {total}",
+        "pageError": "This page couldn't be loaded. Download the document to review it.",
+        "prev": "Previous",
+        "next": "Next",
+        "downloadHint": "Prefer to read it in full?"
+      },
+      "filesLabel": "Files to review"
+    },
+    "recipients": {
+      "heading": "Recipients & order",
+      "sub": "Sign it yourself, or invite a co-signer to the same container.",
+      "youRole": "Signer · LoA {loa}",
+      "signerTag": "SIGNER",
+      "add": "Add a co-signer",
+      "remove": "Remove co-signer",
+      "label": "Co-signer identity code",
+      "placeholder": "PNOLV-XXXXXX-XXXXX",
+      "error": "Enter the co-signer's identity code (e.g. PNOLV-XXXXXX-XXXXX) so the right person can sign.",
+      "orderLabel": "Signing order",
+      "order": {
+        "sequential": "Sequential",
+        "parallel": "Parallel"
+      },
+      "orderHint": {
+        "sequential": "Signers sign one after another, in order.",
+        "parallel": "Signers can sign in any order."
+      },
+      "tierNote": "Your free tier includes one co-signer. More co-signers and roles are part of Premium & Business.",
+      "notifyNote": "The co-signer signs in their own session — the envelope appears in their signing inbox once they sign in with the matching eID. Email invitations arrive when notifications are enabled.",
+      "continue": "Continue"
+    },
+    "send": {
+      "heading": "Review & send",
+      "sub": "Check the details, then send the envelope for signing.",
+      "document": "Document",
+      "signers": "Signers",
+      "you": "You",
+      "order": "Order",
+      "container": "Container",
+      "containerValuePades": "PAdES (native PDF)",
+      "containerValueAsice": "ASiC-E (XAdES)",
+      "send": "Send for signing",
+      "sending": "Sending...",
+      "failed": "The envelope could not be sent. Please try again.",
+      "bundleNote": "{n} files, packaged into one ASiC-E container"
+    },
+    "selfOnly": {
+      "note": "You are the only signer — continue straight to signing.",
+      "continue": "Continue to sign"
+    }
+  },
+  "envelopes": {
+    "backToDocuments": "Back to documents",
+    "status": {
+      "inProgress": "In progress · {signed} of {total} signed"
+    },
+    "concurrent": {
+      "inProgress": "Another signer is signing this document right now. If you both sign at the same time, you may be asked to review the updated document and sign again."
+    },
+    "signers": "Signers · in order",
+    "signersParallel": "Signers · any order",
+    "slot": {
+      "you": "You",
+      "coSigner": "Co-signer",
+      "signed": "Signed",
+      "inProgress": "In progress",
+      "declined": "Declined",
+      "turn": "Their turn",
+      "yourTurn": "Your turn",
+      "waiting": "Waiting"
+    },
+    "meta": {
+      "order": "Order"
+    },
+    "badge": {
+      "yourTurn": "Your turn",
+      "progress": "{signed}/{total} signed",
+      "waiting": "Waiting",
+      "completed": "Completed",
+      "declined": "Declined",
+      "draft": "Draft"
+    },
+    "order": {
+      "sequential": "Sequential",
+      "parallel": "Parallel"
+    },
+    "actions": {
+      "ownerNote": "You're the owner",
+      "cancel": "Cancel envelope",
+      "cancelConfirm": "Cancel this envelope for everyone?",
+      "cancelYes": "Cancel envelope",
+      "cancelNo": "Keep it",
+      "cancelling": "Cancelling...",
+      "sign": "Review & sign",
+      "decline": "Decline…",
+      "declineConfirm": "Decline to sign this envelope?",
+      "declineYes": "Decline",
+      "declineNo": "Keep",
+      "declining": "Declining...",
+      "notYourTurn": "You can sign once the earlier signers have signed."
+    },
+    "error": {
+      "action": "Something went wrong. Please try again.",
+      "invalidDocument": "This document can’t be archived — it isn’t a valid signed document.",
+      "reference": "Reference: {id}"
+    }
+  },
+  "hub": {
+    "eyebrow": "Document",
+    "loading": "Loading document…",
+    "details": "Details",
+    "actions": "Actions",
+    "soon": "Available soon",
+    "preSigned": "This file already contains a signature — you can still add your own.",
+    "ttlNote": "Storage is ephemeral — sign or download before the timer runs out.",
+    "field": {
+      "file": "File",
+      "format": "Format",
+      "signatures": "Signatures",
+      "signaturesYes": "Present",
+      "signaturesNo": "None yet",
+      "size": "Size",
+      "uploaded": "Uploaded",
+      "autoDelete": "Auto-deletes in"
+    },
+    "act": {
+      "sign": "Start signing",
+      "addCoSigners": "Add co-signers",
+      "validate": "Validate signatures",
+      "archiveTs": "Add archive timestamp",
+      "downloadOriginal": "Download original",
+      "downloadSigned": "Download signed document",
+      "delete": "Delete",
+      "archiveTsDone": "Archive timestamp added",
+      "archiving": "Adding archive timestamp…",
+      "validating": "Validating…",
+      "revalidate": "Re-validate",
+      "viewReport": "View validation report"
+    },
+    "deleteConfirm": "Delete this document? This can't be undone.",
+    "deleteYes": "Yes, delete",
+    "deleteNo": "Keep it",
+    "deleting": "Deleting…",
+    "audit": "Every access to this document is recorded",
+    "preview": "Preview",
+    "kind": {
+      "container": "ASiC-E container",
+      "pdf": "PDF"
+    },
+    "filesInside": "{n} file inside | {n} files inside",
+    "contents": "Contents · {n} file | Contents · {n} files",
+    "showAllSigners": "Show all {n} signers",
+    "showAllFiles": "Show all {n} files",
+    "showFewer": "Show fewer",
+    "trailShowAll": "Show all",
+    "trailFold": "Fold",
+    "downloadFile": "Download {name}",
+    "archiveNeedsValidation": "The archive timestamp unlocks once validation passes.",
+    "downloadFrozen": "Signing is in progress — the document becomes available for download once all parties have responded.",
+    "expiredGone": "Storage was destroyed when the retention timer ran out. The files are gone — the record remains, and it stays available in History.",
+    "expiredGoneLink": "Open History",
+    "validating": {
+      "caption": "Validating signature · EU DSS",
+      "title": "Validating the signature…",
+      "body": "Independently checking it against eIDAS rules via EU DSS — this can take a little while."
+    }
+  },
+  "history": {
+    "eyebrow": "Workspace · History",
+    "title": "History",
+    "subtitle": "Records stay for 90 days after storage is destroyed. The files are gone — the record remains.",
+    "loading": "Loading history…",
+    "col": {
+      "document": "Document",
+      "outcome": "Outcome",
+      "destroyed": "Storage destroyed"
+    },
+    "outcome": {
+      "completed": "Completed",
+      "expired": "Expired",
+      "removed": "Removed"
+    },
+    "sub": {
+      "signed": "signed here",
+      "arrivedSigned": "arrived signed"
+    },
+    "empty": {
+      "title": "Nothing here yet",
+      "body": "When a document's storage timer runs out, its record moves here for a while."
+    },
+    "remove": "Remove record",
+    "removeConfirm": "Remove?",
+    "newer": "Newer",
+    "older": "Older",
+    "note": "Nothing here can be downloaded, signed, or re-validated — storage was destroyed when the retention timer ran out. The platform's audit records are the durable evidence; a file you still hold can be checked on Verify. Records are removed automatically after 90 days."
+  },
+  "trail": {
+    "label": "Audit trail",
+    "uploaded": "Document uploaded",
+    "existingSignature": "Existing signature detected at upload",
+    "signed": "Signed & sealed",
+    "created": "Envelope created",
+    "sent": "Sent for signing",
+    "signedBy": "Signed by {name}",
+    "declinedBy": "Declined by {name}",
+    "waiting": "Waiting for a signature",
+    "completed": "Envelope completed — all signatures applied",
+    "cancelled": "Envelope cancelled",
+    "validated": "Signatures validated",
+    "archived": "Qualified archive timestamp applied"
+  },
+  "common": {
+    "loading": "Loading...",
+    "signOut": "Sign out",
+    "language": "Language",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "close": "Close"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "session": "Your session has ended. Please sign in again.",
+    "upstream": "A service is temporarily unavailable. Please try again shortly."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you were looking for does not exist.",
+    "home": "Go to dashboard"
+  },
+  "accessibility": {
+    "title": "Accessibility statement",
+    "intro": "signbyte is committed to meeting WCAG 2.1 level AA.",
+    "conformance": "This service is designed to be operable by keyboard, compatible with assistive technologies, and readable without relying on colour alone.",
+    "feedback": "If you encounter an accessibility barrier, please contact support so we can address it."
+  },
+  "orderable": {
+    "listLabel": "Items in signing order",
+    "rowLabel": "{name}, position {position} of {total}. Alt plus arrow keys to move."
+  },
+  "landing": {
+    "nav": {
+      "label": "Site",
+      "product": "Product",
+      "trust": "Trust",
+      "compliance": "Compliance"
+    },
+    "start": "Start signing",
+    "verify": "Verify a document",
+    "soon": "soon",
+    "hero": {
+      "eyebrow": "Qualified electronic signatures · eIDAS",
+      "title": "Sign, validate & preserve — the trusted European way.",
+      "lead": "Qualified signatures at {loa} in under a minute, on any device. Cover the whole trust lifecycle — sign, validate, preserve and deliver — never locked to one provider."
+    },
+    "mock": {
+      "qes": "Qualified Electronic Signature · QES",
+      "format": "Format",
+      "signed": "Signed",
+      "container": "Container",
+      "validUntil": "Valid until"
+    },
+    "methods": {
+      "label": "Works with your national eID",
+      "eparakstsMobile": "eParaksts Mobile",
+      "eidCard": "eID card",
+      "eidScan": "eID Scan",
+      "cloudEseal": "Cloud eSeal",
+      "csc": "CSC remote signing",
+      "eudi": "EUDI Wallet"
+    },
+    "lifecycle": {
+      "eyebrow": "The whole trust lifecycle",
+      "title": "Not just signing. Every stage of trust, in one place.",
+      "lead": "Most tools stop at the signature. We carry a document through its entire legal life — and let anyone independently verify the result.",
+      "sign": {
+        "title": "Sign",
+        "body": "QES & QESeal at the LT profile. PAdES, XAdES, ASiC-E. Single or multi-party."
+      },
+      "validate": {
+        "title": "Validate",
+        "body": "LTA-level reports via EU DSS. Anyone can verify a document and read the result."
+      },
+      "preserve": {
+        "title": "Preserve",
+        "body": "Archive timestamps today; qualified long-term preservation with auto re-archiving"
+      },
+      "deliver": {
+        "title": "Deliver",
+        "body": "Qualified registered delivery (QERDS) with proof of send and receipt."
+      }
+    },
+    "pillars": {
+      "eyebrow": "Why {brand}",
+      "title": "Leading, not merely compliant.",
+      "inclusive": {
+        "title": "Frictionless & inclusive",
+        "body": "Sign in under a minute on any device. WCAG 2.1 AA, multilingual, assisted and low-bandwidth flows."
+      },
+      "qualified": {
+        "title": "Qualified by default",
+        "body": "Every signature is LoA-High, QES-grade at the LT profile — with its legal meaning shown in plain language."
+      },
+      "agnostic": {
+        "title": "Provider- & method-agnostic",
+        "body": "Many eID methods, multiple QTSPs. Cross-border and EUDI-Wallet-ready — never a single point of failure."
+      },
+      "private": {
+        "title": "Private by design",
+        "body": "Hash-only where the method allows. Ephemeral storage, and your identity code is never exposed gratuitously."
+      },
+      "transparent": {
+        "title": "Trust transparency",
+        "body": "See exactly what you sign. Recipients understand what a signature means and whether it is valid."
+      },
+      "platform": {
+        "title": "A platform, not a portal",
+        "body": "Embeddable, API-first and workflow-rich. Templates, roles and webhooks for organisations."
+      }
+    },
+    "trust": {
+      "eyebrow": "What-you-see-is-what-you-sign",
+      "title": "Know exactly what you sign — and what it means.",
+      "lead": "Before you commit, preview the precise document. Afterwards, every signature comes with a plain-language explanation of its legal effect and how long it stays verifiable.",
+      "surfaced": "Signer, format, level, timestamps and revocation time — all surfaced.",
+      "reveal": "Identity code revealed only on explicit action — shown, never stored or transmitted.",
+      "public": "Public, shareable verification — no full account required.",
+      "legalLabel": "Legal meaning",
+      "legalQes": "Qualified Electronic Signature",
+      "legalBody": "This is a {qes}. Under eIDAS it has the same legal effect as a handwritten signature across the EU, and remains verifiable until {date}.",
+      "jurisdiction": "Jurisdiction",
+      "assurance": "Assurance",
+      "warnings": "Warnings",
+      "errors": "Errors"
+    },
+    "compliance": {
+      "residency": "EU data residency"
+    },
+    "cta": {
+      "title": "The most trusted way to sign in Europe.",
+      "lead": "Sign your first document in under a minute — qualified, and yours to verify forever."
+    },
+    "footer": {
+      "blurb": "European Trust Platform. Qualified electronic signing, validation, preservation and delivery — built on certified QTSP infrastructure.",
+      "product": "Product",
+      "trust": "Trust",
+      "developers": "Developers",
+      "accessibility": "Accessibility",
+      "embeddable": "Embeddable signing",
+      "copyright": "© 2026 signbyte · Built in the Baltics for Europe",
+      "crypto": "Does not build cryptography · externalised to QTSPs via EU DSS"
+    }
+  }
+}

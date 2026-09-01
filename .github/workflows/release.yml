@@ -1,0 +1,51 @@
+# Publish the bundle a self-hoster deploys. Publishing a release for a tag gates on
+# the same checks as CI, builds the bundle from the tagged tree, and attaches it to
+# the release as signbyte-spa-<tag>-dist.tar.gz — the file to unpack behind your own
+# web server (any static file server; the app calls its backend on the same origin
+# under /api/, so route that path to the backend-for-frontend).
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write            # attaches the asset to the release
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Pack and attach the bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          BUNDLE="signbyte-spa-${TAG_NAME}-dist.tar.gz"
+          tar -czf "$BUNDLE" -C dist .
+          sha256sum "$BUNDLE" > "$BUNDLE.sha256"
+          gh release upload "$TAG_NAME" "$BUNDLE" "$BUNDLE.sha256" --clobber
