@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import ValidatingCard from '@/components/ValidatingCard.vue'
 import type { Validation } from '@/stores/signing'
+import type { ReturnTarget } from '@/lib/return-action'
 
 // The post-approval completion experience (Authenticate → Complete), built to the
 // design. Purely presentational: it shows progress and the outcome — it performs no
@@ -24,9 +25,12 @@ const props = defineProps<{
   // Where "Back" leads: the document's hub (a co-signer's slot), or the
   // documents home (a wizard self-sign — its envelope work is already done).
   backToHub: boolean
+  // The way back to the system that prepared this signing (the envelope's origin),
+  // when there is one — it becomes the primary action. Absent → the design's own actions.
+  returnTo?: ReturnTarget | null
 }>()
 
-const emit = defineEmits<{ viewReport: []; retry: []; download: []; back: [] }>()
+const emit = defineEmits<{ viewReport: []; retry: []; download: []; back: []; returnTo: [] }>()
 const { t } = useI18n()
 
 const isFinalizing = computed(() => props.phase === 'finalizing')
@@ -223,14 +227,28 @@ const UNDER_PATH =
       </div>
     </div>
 
-    <!-- actions. -->
+    <!-- actions. With an origin (a document system prepared this signing) the way back
+         to it is the primary action — the person came from there and their work
+         continues there; the portal's own actions step down to the outlined row and
+         "Back" stays a text link. Without one, the design's actions as they are. -->
     <div class="mt-7 flex flex-col items-center gap-3.5">
-      <Button v-if="isPassed && validation" @click="emit('viewReport')">{{ t('signing.done.viewReport') }}</Button>
-      <Button v-else-if="isPending" @click="emit('retry')">{{ t('signing.complete.retry') }}</Button>
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <Button variant="outline" :disabled="!canDownload" @click="emit('download')">{{ t('signing.done.download') }}</Button>
+      <template v-if="returnTo">
+        <Button data-testid="return-to" @click="emit('returnTo')">{{ t('signing.done.returnTo', { name: returnTo.name }) }}</Button>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Button v-if="isPassed && validation" variant="outline" @click="emit('viewReport')">{{ t('signing.done.viewReport') }}</Button>
+          <Button v-else-if="isPending" variant="outline" @click="emit('retry')">{{ t('signing.complete.retry') }}</Button>
+          <Button variant="outline" :disabled="!canDownload" @click="emit('download')">{{ t('signing.done.download') }}</Button>
+        </div>
         <Button variant="ghost" @click="emit('back')">{{ backLabel }}</Button>
-      </div>
+      </template>
+      <template v-else>
+        <Button v-if="isPassed && validation" @click="emit('viewReport')">{{ t('signing.done.viewReport') }}</Button>
+        <Button v-else-if="isPending" @click="emit('retry')">{{ t('signing.complete.retry') }}</Button>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Button variant="outline" :disabled="!canDownload" @click="emit('download')">{{ t('signing.done.download') }}</Button>
+          <Button variant="ghost" @click="emit('back')">{{ backLabel }}</Button>
+        </div>
+      </template>
       <span v-if="isPending" class="eyebrow tracking-[0.04em] text-faint">{{ t('signing.complete.pendingNote') }}</span>
     </div>
   </div>

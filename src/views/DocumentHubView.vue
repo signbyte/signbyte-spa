@@ -23,6 +23,7 @@ import {
   isFinished,
   othersSigningNow,
 } from '@/lib/envelope-status'
+import { returnOutcome, returnTarget } from '@/lib/return-action'
 import { ApiError } from '@/lib/api'
 
 // The ONE document screen — a chain's home, reached from any dashboard row, the
@@ -129,6 +130,20 @@ const mineIsTurn = computed(() => Boolean(mySlot.value && turnIds.value.has(mySl
 const mineFinished = computed(() => Boolean(mySlot.value && isFinished(mySlot.value)))
 const concurrentSigning = computed(() => Boolean(mySlot.value && othersSigningNow(detail.value, mySlot.value.id)))
 const canCancel = computed(() => isViewerOwner.value && envActive.value)
+
+// The envelope's origin — the system that prepared it for its own user, when one did.
+// Named in Details; and once the person's part is over (their slot signed or declined,
+// or the request cancelled under them), the way back to it, with their own act as the
+// outcome. Both absent for an envelope started here.
+const origin = computed(() => detail.value?.envelope.origin ?? null)
+const hubReturn = computed(() => {
+  const outcome = returnOutcome(detail.value, mySlot.value)
+
+  return outcome ? returnTarget(detail.value, mySlot.value, outcome) : null
+})
+function goReturn(): void {
+  if (hubReturn.value) window.location.assign(hubReturn.value.href)
+}
 
 const title = computed(() => chain.value?.filename || id.value)
 const mime = computed(() => chain.value?.mime ?? '')
@@ -796,6 +811,14 @@ function goToDashboard() {
                   {{ t('hub.downloadFrozen') }}
                 </p>
 
+                <!-- The way back to the system that asked for this signature (the envelope's
+                     origin), once the person's part is over — signed or declined, or the
+                     request cancelled under them. The one action on this card that leaves
+                     the portal; the address is the one stored with the envelope, https only. -->
+                <Button v-if="hubReturn" data-testid="hub-return" @click="goReturn">
+                  {{ t('signing.done.returnTo', { name: hubReturn.name }) }}
+                </Button>
+
                 <!-- Owner cancel of the live workflow. -->
                 <div v-if="canCancel" class="mt-1 border-t border-line-2 pt-3">
                   <Button
@@ -908,7 +931,13 @@ function goToDashboard() {
             <div class="rounded-card border border-line bg-surface p-5">
               <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-faint">{{ t('hub.details') }}</p>
               <dl class="mt-3 font-mono text-[12px] text-muted-2">
-                <div class="flex justify-between gap-4">
+                <!-- The system that asked for this signature, when one did — the most
+                     identifying fact about the document, so it leads the metadata. -->
+                <div v-if="origin" class="flex justify-between gap-4">
+                  <dt>{{ t('hub.field.requestedBy') }}</dt>
+                  <dd class="truncate text-ink">{{ origin.name }}</dd>
+                </div>
+                <div class="flex justify-between gap-4" :class="origin ? 'mt-1.5' : ''">
                   <dt>{{ t('hub.field.file') }}</dt>
                   <dd class="truncate text-ink">{{ title }}</dd>
                 </div>
