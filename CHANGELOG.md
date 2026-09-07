@@ -11,9 +11,10 @@ document hub's Details card leads with *Requested by <name>*, and after the pers
 completion screen's primary action is *Return to <name>*; the report and download step down to the
 outlined row. The same button appears on the hub once the person's part is over — signed or declined,
 or the request cancelled — so a decline has a way back too. The browser goes to the return address
-stored with the envelope (this signer's own, else the requester's default), with `slot` and `outcome`
-(`signed` · `declined` · `cancelled`, the person's own act) appended to whatever the address already
-carries; anything not `https` is never offered. An envelope started in the portal shows none of this.
+stored with the envelope (this signer's own, else the requester's default), with `signingRequest` (the
+id of the signing request — the envelope the portal was showing), `slot` and `outcome` (`signed` ·
+`declined` · `cancelled`, the person's own act) appended to whatever the address already carries — the
+portal sets these three itself, so a stale value in the stored address never wins; anything not `https` is never offered. An envelope started in the portal shows none of this.
 
 **A signing link may name the language.** `/envelopes/{id}?lang=lv` (or `en`) opens the portal in that
 language and remembers the choice like a manual switch; an unknown value is ignored and the link still

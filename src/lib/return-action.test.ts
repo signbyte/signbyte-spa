@@ -16,7 +16,7 @@ function detail(slots: ComposedSlot[], origin?: EnvelopeOrigin, status = 'sent')
 
 const ACME: EnvelopeOrigin = {
   name: 'Acme DMS',
-  returnUrl: 'https://dms.acme.example/return?state=q8Zr&signingRequest=01K5V8',
+  returnUrl: 'https://dms.acme.example/return?state=q8Zr',
   ref: 'contracts/2026-117',
 }
 
@@ -30,21 +30,27 @@ describe('returnTarget', () => {
     expect(returnTarget(detail([], { name: 'Acme DMS' }), slot('s-1'), 'signed')).toBeNull()
   })
 
-  it("uses the origin's default address and appends slot + outcome, keeping the stored query", () => {
+  it("uses the origin's default address and appends signingRequest + slot + outcome, keeping the stored query", () => {
     const t = returnTarget(detail([], ACME), slot('s-1', { orderIndex: 2 }), 'signed')
     expect(t?.name).toBe('Acme DMS')
-    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=01K5V8&slot=2&outcome=signed')
+    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&slot=2&outcome=signed')
   })
 
   it("prefers this signer's own return address over the default", () => {
     const own = slot('s-1', { orderIndex: 1, returnUrl: 'https://dms.acme.example/contracts/2026-117?state=q8Zr' })
     const t = returnTarget(detail([own], ACME), own, 'declined')
-    expect(t?.href).toBe('https://dms.acme.example/contracts/2026-117?state=q8Zr&slot=1&outcome=declined')
+    expect(t?.href).toBe('https://dms.acme.example/contracts/2026-117?state=q8Zr&signingRequest=env-1&slot=1&outcome=declined')
+  })
+
+  it('names the envelope it shows even when the stored address claims another request', () => {
+    const stale: EnvelopeOrigin = { ...ACME, returnUrl: 'https://dms.acme.example/return?state=q8Zr&signingRequest=other' }
+    const t = returnTarget(detail([], stale), slot('s-1'), 'signed')
+    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&slot=1&outcome=signed')
   })
 
   it('omits slot when the viewer has none, still naming the outcome', () => {
     const t = returnTarget(detail([], ACME), null, 'cancelled')
-    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=01K5V8&outcome=cancelled')
+    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&outcome=cancelled')
   })
 
   it('refuses a return address that is not https, and one that is not a URL', () => {

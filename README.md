@@ -87,6 +87,6 @@ anti-forgery token.
 - The one navigation that leaves the portal — *Return to <requester>*, after a signing a
   document system prepared — goes to the return address stored with the envelope (admitted
   `https`-only by the platform and checked against the requester's registration by the service
-  that created it); the app appends only which slot returned and the person's own outcome, and
+  that created it); the app appends which signing request (the envelope id), which slot returned and the person's own outcome, and
   never builds a destination from query input.
 - Accessibility (WCAG 2.1 level AA) is a release requirement, not a finishing touch.
