@@ -299,7 +299,8 @@
       "download": "Lejupielādēt parakstīto dokumentu",
       "again": "Atpakaļ uz dokumentiem",
       "backToDocument": "Atpakaļ pie dokumenta",
-      "viewReport": "Skatīt validācijas atskaiti"
+      "viewReport": "Skatīt validācijas atskaiti",
+      "returnTo": "Atpakaļ uz {name}"
     },
     "error": {
       "binding": "Šī metode neatbilst tam, kā pieslēdzāties. Pieslēdzieties vēlreiz ar atbilstošo metodi, lai to izmantotu.",
@@ -529,7 +530,8 @@
       "signaturesNo": "Vēl nav",
       "size": "Izmērs",
       "uploaded": "Augšupielādēts",
-      "autoDelete": "Automātiski dzēsīs pēc"
+      "autoDelete": "Automātiski dzēsīs pēc",
+      "requestedBy": "Pieprasītājs"
     },
     "act": {
       "sign": "Sākt parakstīšanu",

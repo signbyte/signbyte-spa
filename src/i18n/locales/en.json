@@ -299,7 +299,8 @@
       "download": "Download signed document",
       "again": "Back to documents",
       "backToDocument": "Back to document",
-      "viewReport": "View validation report"
+      "viewReport": "View validation report",
+      "returnTo": "Return to {name}"
     },
     "error": {
       "binding": "This method does not match how you signed in. Sign in again with the matching method to use it.",
@@ -529,7 +530,8 @@
       "signaturesNo": "None yet",
       "size": "Size",
       "uploaded": "Uploaded",
-      "autoDelete": "Auto-deletes in"
+      "autoDelete": "Auto-deletes in",
+      "requestedBy": "Requested by"
     },
     "act": {
       "sign": "Start signing",

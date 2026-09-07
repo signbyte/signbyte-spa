@@ -11,8 +11,10 @@ import ValidationReport from '@/components/ValidationReport.vue'
 import { useSessionStore } from '@/stores/session'
 import { useSigningStore, type BeginInput, type Job, type SigningPhase } from '@/stores/signing'
 import { useDocumentsStore } from '@/stores/documents'
+import { useEnvelopesStore } from '@/stores/envelopes'
 import { readSigningCertificate, signDigest, hashFnForDigest, isExtensionMissing } from '@/lib/webeid'
 import { deriveSigFormat } from '@/lib/sigFormat'
+import { returnTarget } from '@/lib/return-action'
 
 // Post-approval completion mechanics (the completion screen). finalizing long-polls
 // signflow through the BFF so it answers the moment the seal lands rather than tight-
@@ -34,6 +36,7 @@ const { t, locale } = useI18n()
 const session = useSessionStore()
 const signing = useSigningStore()
 const docs = useDocumentsStore()
+const envelopes = useEnvelopesStore()
 
 // This screen signs one envelope slot (/envelopes/:id/slots/:slot/sign — the
 // document to sign rides in ?doc=). Every signing is an envelope slot: a
@@ -433,6 +436,30 @@ function completionPhaseFor(p: SigningPhase): 'finalizing' | 'validating' | 'pas
 }
 const completionPhase = computed(() => completionPhaseFor(signing.phase))
 
+// The way back to the system that prepared this signing, when one did (the envelope's
+// origin, read through the composed view). Loaded as the completion phases begin so the
+// button is there when the screen lands; a miss just means no button — the portal never
+// invents a destination.
+watch(
+  completionPhase,
+  (p) => {
+    if (p && envelopeId.value && envelopes.detail?.envelope.id !== envelopeId.value) {
+      void envelopes.loadDetail(envelopeId.value).catch(() => undefined)
+    }
+  },
+  { immediate: true },
+)
+const returnTo = computed(() => {
+  const d = envelopes.detail
+  if (!d || d.envelope.id !== envelopeId.value) return null
+  const slot = d.slots.find((s) => s.id === slotId.value) ?? null
+
+  return returnTarget(d, slot, 'signed')
+})
+function goReturn(): void {
+  if (returnTo.value) window.location.assign(returnTo.value.href)
+}
+
 // The method the eyebrow names (empty after a redirect return, where the choice isn't
 // restored client-side — the card falls back to "LoA High" alone). Only the device-push
 // flow (eID Scan) reaches the confirm-in-app window, so there its name is known even
@@ -769,7 +796,9 @@ function goBack(): void {
         :validation="signing.validation"
         :can-download="!!signing.job?.containerId"
         :back-to-hub="!fromWizard"
+        :return-to="returnTo"
         @view-report="showReport = true"
+        @return-to="goReturn"
         @retry="retryValidation"
         @download="downloadResult"
         @back="goBack"

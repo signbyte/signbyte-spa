@@ -84,4 +84,9 @@ anti-forgery token.
 - The login return validates its redirect target (same-origin paths only) to defend
   against open-redirect and replay.
 - Server and validation content is rendered as data, never as HTML.
+- The one navigation that leaves the portal — *Return to <requester>*, after a signing a
+  document system prepared — goes to the return address stored with the envelope (admitted
+  `https`-only by the platform and checked against the requester's registration by the service
+  that created it); the app appends which signing request (the envelope id), which slot returned and the person's own outcome, and
+  never builds a destination from query input.
 - Accessibility (WCAG 2.1 level AA) is a release requirement, not a finishing touch.

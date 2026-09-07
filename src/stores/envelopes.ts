@@ -44,6 +44,20 @@ export interface EnvelopeHeader {
   orderPolicy?: string
   version: number
   createdAt?: string
+  // origin names the system that prepared the envelope for its own user (a document
+  // system that hands the signer to the portal), when one did — absent for an envelope
+  // started here. The hub shows "Requested by <name>"; after the ceremony the portal
+  // offers the way back to its return address.
+  origin?: EnvelopeOrigin
+}
+
+// The system that prepared an envelope: its registered display name, the default
+// address the signer's browser is offered back to, and its own reference. Relayed by
+// the BFF as the envelope service holds it; the portal never edits or invents it.
+export interface EnvelopeOrigin {
+  name: string
+  returnUrl?: string
+  ref?: string
 }
 
 // One signer slot in the composed view: the envelope service's slot fields plus the
@@ -72,6 +86,10 @@ export interface ComposedSlot {
   // party's.
   signerName?: string
   identityRef?: string
+  // returnUrl is this signer's own return address, overriding the origin's default. The
+  // BFF forwards it on the viewer's own slot (and on every slot to the owner) — another
+  // party's is never here.
+  returnUrl?: string
 }
 
 // The composed envelope view: header + ordered slots + attached documents, returned

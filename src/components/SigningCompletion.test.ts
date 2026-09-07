@@ -79,3 +79,28 @@ describe('SigningCompletion', () => {
     expect(w.text()).toContain('LoA High')
   })
 })
+
+describe('SigningCompletion — the way back to the requester', () => {
+  const RETURN = { name: 'Acme DMS', href: 'https://dms.acme.example/return?slot=1&outcome=signed' }
+
+  it('offers no way back without an origin — the design as it is', () => {
+    expect(mountWith('passed', PASSED).find('[data-testid="return-to"]').exists()).toBe(false)
+  })
+
+  it('makes "Return to <name>" the primary action, keeps report + download, and emits the return', async () => {
+    const w = mountWith('passed', PASSED, { returnTo: RETURN })
+    const buttons = w.findAll('button')
+    expect(buttons[0].text()).toBe('Return to Acme DMS')
+    expect(w.text()).toContain('View validation report')
+    expect(w.text()).toContain('Download signed document')
+    await w.get('[data-testid="return-to"]').trigger('click')
+    expect(w.emitted('returnTo')).toBeTruthy()
+    expect(w.emitted('viewReport')).toBeFalsy()
+  })
+
+  it('keeps the way back on the pending variant too, beside Retry validation', () => {
+    const w = mountWith('pending', null, { returnTo: RETURN })
+    expect(w.findAll('button')[0].text()).toBe('Return to Acme DMS')
+    expect(w.text()).toContain('Retry validation')
+  })
+})

@@ -6,6 +6,7 @@ import {
   type Router,
 } from 'vue-router'
 import { useSessionStore } from '@/stores/session'
+import { applyLocaleHint } from '@/lib/locale-hint'
 
 // Every route is session-guarded except the login/callback pair and the public
 // information views. `public: true` opts a route out of the guard.
@@ -128,6 +129,11 @@ export function createAppRouter(history: RouterHistory = createWebHistory()): Ro
   })
 
   router.beforeEach(async (to) => {
+    // A signing link may name the language the requester asked for (?lang=lv|en on the
+    // envelope URL). Applied before anything renders — the login screen included, since
+    // a guest following the link is sent there first — and remembered like a manual switch.
+    if (to.name === 'envelope') applyLocaleHint(to.query.lang)
+
     const session = useSessionStore()
 
     // Resolve the session once on first navigation (or after a reset).
