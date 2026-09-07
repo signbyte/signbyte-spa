@@ -3,6 +3,16 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
+## v0.3.0
+
+**The way back belongs to one signer.** *Return to <requester>* is shown only to a signer the requester
+gave a return address of their own; a signer without one — an external party the requester invited to
+co-sign, say — sees no return and is never sent to, or shown, the requester's system. Until now the
+button fell back to a default address stored with the envelope, so an outside co-signer could be handed
+the requester's location by omission. The requester decides per signer; the portal infers nothing from
+the envelope. Behaviour for a signer with their own address is unchanged: the same button, the same
+`signingRequest` · `slot` · `outcome` parameters.
+
 ## v0.2.0
 
 **A signing a document system prepared now says who asked, and offers the way back.** When an

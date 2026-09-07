@@ -36,10 +36,13 @@ export function returnOutcome(
 }
 
 // The return target for one slot and outcome, or null when the envelope has no origin,
-// no usable return address (this slot's own, else the origin's default), or an address
-// that is not https. Whatever query the stored address already carries is kept; the
-// three parameters the portal owns are set by it, so a stale value in the stored address
-// never wins over what is actually being shown.
+// this signer has no return address of their own, or the address is not https. A return
+// belongs to one signer: the requester gives it to the people it wants back (its own),
+// and leaves it off an external party — who then sees no way back and is never sent to,
+// or shown, the requester's system. No address, no button; nothing is inherited from the
+// envelope. Whatever query the stored address already carries is kept; the three
+// parameters the portal owns are set by it, so a stale value in the stored address never
+// wins over what is actually being shown.
 export function returnTarget(
   detail: EnvelopeDetail | null,
   slot: ComposedSlot | null | undefined,
@@ -48,7 +51,7 @@ export function returnTarget(
   if (!detail) return null
   const origin = detail.envelope.origin
   if (!origin?.name) return null
-  const base = slot?.returnUrl || origin.returnUrl
+  const base = slot?.returnUrl
   if (!base) return null
   let url: URL
   try {
