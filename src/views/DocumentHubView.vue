@@ -13,6 +13,7 @@ import ValidationReport from '@/components/ValidationReport.vue'
 import type { ChainRow } from '@/stores/dashboard'
 import { useDocumentsStore, type ValidationAnswer, type InnerFile } from '@/stores/documents'
 import { useEnvelopesStore, type ComposedSlot } from '@/stores/envelopes'
+import { displayIdentityCode } from '@/lib/identity-code'
 import { useSessionStore } from '@/stores/session'
 import {
   sortedSlots,
@@ -229,7 +230,12 @@ function slotName(slot: ComposedSlot): string {
     return session.identity?.name || slot.signerName || t('envelopes.slot.you')
   }
 
-  return slot.signerName || slot.identityRef || t('envelopes.slot.coSigner')
+  // Before a co-signer has participated there is no authenticated name, so the slot is
+  // shown by the code its invitation was filed under — written the way its own country
+  // writes it, never with the country or the identity type dropped: a person, a foreign
+  // namesake holding the same digits and an organisation's register number must not
+  // render alike. Only the owner ever receives another party's code at all.
+  return slot.signerName || (slot.identityRef ? displayIdentityCode(slot.identityRef) : '') || t('envelopes.slot.coSigner')
 }
 function isYou(slot: ComposedSlot): boolean {
   return Boolean(mySlot.value && slot.id === mySlot.value.id)

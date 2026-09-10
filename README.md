@@ -38,7 +38,11 @@ src/
   assets/main.css      design tokens (Tailwind theme) + base styles + self-hosted fonts
   components/          the app shell + owned UI primitives (ui/)
   i18n/                vue-i18n setup + en/lv message catalogues
-  lib/                 the fetch wrapper (api) + class-merge helper (cn)
+  lib/                 the fetch wrapper (api), the class-merge helper (cn) and the
+                       rules a screen has to know: identity-code (one identity per
+                       person, whichever way a code is written) + signing-countries
+                       (the countries able to issue a qualified certificate),
+                       envelope-status, return-action, sigFormat, locale-hint
   router/              routes + the session route guard + the sign-route guard (a completed source redirects to its hub)
   stores/              Pinia stores (session, ...)
   views/               one component per screen
