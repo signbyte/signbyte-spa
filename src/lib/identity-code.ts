@@ -26,6 +26,11 @@ const KNOWN_TYPES = new Set(['PNO', 'NTR', 'PAS', 'IDC', 'TIN'])
 // not an identity anyone authenticates as. So only a natural person can be invited:
 // `NTR` is a national trade-register number, carried in a certificate's
 // organizationIdentifier rather than its serialNumber.
+//
+// The services read this same split from the one shared library, and each refuses an
+// organisation whatever this screen sends. The list stays written here because a browser
+// cannot call that library, and because the screen's job is to explain the refusal before
+// a person has sent anything — not to decide it.
 const PERSON_TYPES = new Set(['PNO', 'PAS', 'IDC', 'TIN'])
 
 // The type given to a code that arrives with none of its own: a code typed into a
