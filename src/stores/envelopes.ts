@@ -108,6 +108,11 @@ export interface SlotDraft {
   flow?: string
   requiredLoa?: string
   identityRef?: string
+  // The two-letter country whose register issued identityRef — what the person inviting
+  // chose beside the code they typed. It is used only when the code itself names no
+  // country; one that does is believed. The platform stores ONE spelling of an identity
+  // and needs the pair to decide which.
+  country?: string
 }
 
 // The request to build an envelope. Documents + slots seed it at creation so the

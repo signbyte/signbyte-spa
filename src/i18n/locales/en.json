@@ -423,8 +423,8 @@
       "add": "Add a co-signer",
       "remove": "Remove co-signer",
       "label": "Co-signer identity code",
-      "placeholder": "PNOLV-XXXXXX-XXXXX",
-      "error": "Enter the co-signer's identity code (e.g. PNOLV-XXXXXX-XXXXX) so the right person can sign.",
+      "placeholder": "050990-66731",
+      "error": "Enter the co-signer's identity code so the right person can sign.",
       "orderLabel": "Signing order",
       "order": {
         "sequential": "Sequential",
@@ -436,7 +436,22 @@
       },
       "tierNote": "Your free tier includes one co-signer. More co-signers and roles are part of Premium & Business.",
       "notifyNote": "The co-signer signs in their own session — the envelope appears in their signing inbox once they sign in with the matching eID. Email invitations arrive when notifications are enabled.",
-      "continue": "Continue"
+      "continue": "Continue",
+      "countryLabel": "Country that issued the code",
+      "countryGroup": {
+        "baltic": "Baltics",
+        "euEea": "EU / EEA",
+        "mutual": "Recognised by agreement"
+      },
+      "resolved": "One identity — every way of writing this code resolves here.",
+      "errLength": "{country} personal code has {want} digits — this one has {got}.",
+      "errLengthOther": "{country}: a personal code has {want} digits — this one has {got}.",
+      "errDigits": "{country} personal code is written in digits only.",
+      "errDigitsOther": "{country}: a personal code is written in digits only.",
+      "errNotAPerson": "“{type}” identifies an organisation, not a person — an organisation signs with its own e-seal and cannot be invited to a signing. Enter the person’s own code.",
+      "errUnknownType": "“{type}” is not an identity type this platform knows. Enter the code itself and choose the country beside it.",
+      "errAmbiguous": "This starts like an identity type but carries none. Enter the code itself and choose the country beside it.",
+      "errMalformed": "An identity code is written in letters and digits only."
     },
     "send": {
       "heading": "Review & send",

@@ -15,6 +15,7 @@ import { useEnvelopesStore } from '@/stores/envelopes'
 import { readSigningCertificate, signDigest, hashFnForDigest, isExtensionMissing } from '@/lib/webeid'
 import { deriveSigFormat } from '@/lib/sigFormat'
 import { returnTarget } from '@/lib/return-action'
+import { signingExit } from '@/lib/signing-exit'
 
 // Post-approval completion mechanics (the completion screen). finalizing long-polls
 // signflow through the BFF so it answers the moment the seal lands rather than tight-
@@ -129,11 +130,23 @@ onMounted(() => {
       // page, rather than lingering on a signing-view retry state. replace() so Back
       // doesn't re-enter the errored return URL.
       void signing.abandon(resumeJobId)
-      router.replace(
-        fromWizard.value
-          ? { name: 'documents' }
-          : { name: 'document-hub', params: { id: documentId.value }, query: { env: envelopeId.value } },
-      )
+      // The same exit as the completion screen's, resolved the same way: a cancel returns
+      // to the document it was about. This path runs before the envelope is loaded (that
+      // happens as the completion phases begin), so it is fetched here — and a failure
+      // still lands somewhere real instead of on a route the router rejects.
+      void envelopes
+        .loadDetail(envelopeId.value)
+        .catch(() => undefined)
+        .then(() =>
+          router.replace(
+            signingExit({
+              fromWizard: fromWizard.value,
+              envelopeId: envelopeId.value,
+              documentIdFromQuery: documentId.value,
+              detail: envelopes.detail,
+            }),
+          ),
+        )
 
       return
     }
@@ -573,13 +586,18 @@ const stepPulse = computed(
 
 // Return where this signing was entered from: the documents home for a wizard
 // self-sign, otherwise the document's hub (with the envelope pre-resolved).
+// Leaving the signing screen. The destination is resolved rather than read off the URL:
+// a redirect provider returns the browser to an address carrying only the job, so the
+// document id the screen was opened with is gone by the time the person is finished.
 function goBack(): void {
-  if (fromWizard.value) {
-    router.push({ name: 'documents' })
-
-    return
-  }
-  router.push({ name: 'document-hub', params: { id: documentId.value }, query: { env: envelopeId.value } })
+  router.push(
+    signingExit({
+      fromWizard: fromWizard.value,
+      envelopeId: envelopeId.value,
+      documentIdFromQuery: documentId.value,
+      detail: envelopes.detail,
+    }),
+  )
 }
 </script>
 

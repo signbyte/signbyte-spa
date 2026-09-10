@@ -423,8 +423,8 @@
       "add": "Pievienot līdzparakstītāju",
       "remove": "Noņemt līdzparakstītāju",
       "label": "Līdzparakstītāja identitātes kods",
-      "placeholder": "PNOLV-XXXXXX-XXXXX",
-      "error": "Ievadiet līdzparakstītāja identitātes kodu (piem., PNOLV-XXXXXX-XXXXX), lai parakstīt varētu īstā persona.",
+      "placeholder": "050990-66731",
+      "error": "Ievadiet līdzparakstītāja identitātes kodu, lai parakstīt varētu īstā persona.",
       "orderLabel": "Parakstīšanas secība",
       "order": {
         "sequential": "Secīga",
@@ -436,7 +436,22 @@
       },
       "tierNote": "Jūsu bezmaksas plāns iekļauj vienu līdzparakstītāju. Vairāk līdzparakstītāju un lomu ir Premium un Business plānā.",
       "notifyNote": "Līdzparakstītājs paraksta savā sesijā — aploksne parādās viņa parakstīšanas iesūtnē, kad viņš pieslēdzas ar atbilstošo eID. E-pasta uzaicinājumi pienāks, kad būs iespējoti paziņojumi.",
-      "continue": "Turpināt"
+      "continue": "Turpināt",
+      "countryLabel": "Valsts, kas izsniegusi kodu",
+      "countryGroup": {
+        "baltic": "Baltija",
+        "euEea": "ES / EEZ",
+        "mutual": "Atzītas pēc vienošanās"
+      },
+      "resolved": "Viena identitāte — jebkurš šī koda rakstības veids nonāk šeit.",
+      "errLength": "{country} personas kodam ir {want} cipari — šim ir {got}.",
+      "errLengthOther": "{country}: personas kodam ir {want} cipari — šim ir {got}.",
+      "errDigits": "{country} personas kods rakstāms tikai ar cipariem.",
+      "errDigitsOther": "{country}: personas kods rakstāms tikai ar cipariem.",
+      "errNotAPerson": "“{type}” apzīmē organizāciju, nevis personu — organizācija paraksta ar savu e-zīmogu, un to nevar uzaicināt parakstīties. Ievadiet pašas personas kodu.",
+      "errUnknownType": "“{type}” nav šai platformai zināms identitātes veids. Ievadiet pašu kodu un izvēlieties valsti blakus.",
+      "errAmbiguous": "Šis sākas kā identitātes veids, bet tādu nesatur. Ievadiet pašu kodu un izvēlieties valsti blakus.",
+      "errMalformed": "Identitātes kods rakstāms tikai ar burtiem un cipariem."
     },
     "send": {
       "heading": "Pārskatīt un nosūtīt",

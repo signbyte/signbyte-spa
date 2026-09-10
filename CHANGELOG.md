@@ -13,6 +13,35 @@ the requester's location by omission. The requester decides per signer; the port
 the envelope. Behaviour for a signer with their own address is unchanged: the same button, the same
 `signingRequest` · `slot` · `outcome` parameters.
 
+**A co-signer is invited by a personal code and the country that issued it.** The identity-code field on
+*Recipients & order* now has a country beside it — Latvia by default, the Baltic states first, then the rest
+of the EU and EEA and the two countries recognised by agreement (Moldova, Ukraine). Type the code however it
+is written — `050990-66731`, `05099066731`, or the qualified `PNOLV-050990-66731` a card or another system
+produces — and on leaving the field it settles to one form; a code that names its own country moves the
+dropdown to that country. Nobody types `PNO` any more, and the placeholder no longer suggests it.
+
+The field also explains a code it cannot use, which the portal could not do before: a Latvian personal code
+is eleven digits, so ten of them says so and names the count. And an **organisation's** code is refused
+outright — `NTR…` is a trade-register number, and an organisation signs with its own e-seal rather than
+being invited to a signing, so the field asks for the person's own code instead. Countries outside the
+published trust lists are not offered at all: a signature made under one could not be validated here.
+
+**Why this matters for an integrator:** the portal now sends `country` beside `identityRef` when it creates
+an envelope or adds a slot, and the platform stores **one** spelling of an identity code, so the same person
+invited by a bare code and arriving with a card that spells it `PNOLV-…` is one person rather than two. A
+stored code is also displayed the way its own country writes it — a Latvian personal number as
+`050990-66731`, and any other as the full code including its country and type, because a person, a foreign
+namesake with the same digits and an organisation's register number must never render alike.
+
+**"Back to document" works after a signing that authorised on the provider's page.** A co-signer who signed
+with eParaksts Mobile, eID Scan or a remote credential pressed *Back to document* on the completion screen
+and nothing happened — no navigation, no message. The platform returns the browser from those flows to an
+address carrying only the signing job, so the document the screen had been opened with was no longer in the
+URL, and the button was trying to reach a page it could not name. The destination is now resolved from the
+envelope that was signed, and a cancel at the provider's page returns to the same place instead of leaving
+the person on the signing screen. A signing with the card was never affected, because that flow never leaves
+the page and keeps its address.
+
 ## v0.2.0
 
 **A signing a document system prepared now says who asked, and offers the way back.** When an
