@@ -14,6 +14,8 @@ function detail(slots: ComposedSlot[], origin?: EnvelopeOrigin, status = 'sent')
   }
 }
 
+// The requester, as the portal names it. An older envelope may still carry a stored
+// default address on its origin; it is never consulted.
 const ACME: EnvelopeOrigin = {
   name: 'Acme DMS',
   returnUrl: 'https://dms.acme.example/return?state=q8Zr',
@@ -22,41 +24,47 @@ const ACME: EnvelopeOrigin = {
 
 describe('returnTarget', () => {
   it('is null without an origin — an envelope started in the portal has no way back', () => {
-    expect(returnTarget(detail([slot('s-1')]), slot('s-1'), 'signed')).toBeNull()
-    expect(returnTarget(null, slot('s-1'), 'signed')).toBeNull()
+    const own = slot('s-1', { returnUrl: 'https://dms.acme.example/contracts/2026-117' })
+    expect(returnTarget(detail([own]), own, 'signed')).toBeNull()
+    expect(returnTarget(null, own, 'signed')).toBeNull()
   })
 
-  it('is null when the origin names the requester but stores no return address', () => {
-    expect(returnTarget(detail([], { name: 'Acme DMS' }), slot('s-1'), 'signed')).toBeNull()
+  it("is null for a signer the requester gave no address — even when the envelope's origin stores a default (no address, no button)", () => {
+    const external = slot('s-2', { orderIndex: 2 })
+    expect(returnTarget(detail([external], ACME), external, 'signed')).toBeNull()
   })
 
-  it("uses the origin's default address and appends signingRequest + slot + outcome, keeping the stored query", () => {
-    const t = returnTarget(detail([], ACME), slot('s-1', { orderIndex: 2 }), 'signed')
+  it('is null when the viewer has no slot — a return belongs to a signer', () => {
+    expect(returnTarget(detail([], ACME), null, 'cancelled')).toBeNull()
+  })
+
+  it("uses this signer's own return address and appends signingRequest + slot + outcome, keeping the stored query", () => {
+    const own = slot('s-1', { orderIndex: 2, returnUrl: 'https://dms.acme.example/contracts/2026-117?state=q8Zr' })
+    const t = returnTarget(detail([own], ACME), own, 'signed')
     expect(t?.name).toBe('Acme DMS')
-    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&slot=2&outcome=signed')
+    expect(t?.href).toBe('https://dms.acme.example/contracts/2026-117?state=q8Zr&signingRequest=env-1&slot=2&outcome=signed')
   })
 
-  it("prefers this signer's own return address over the default", () => {
+  it("names the requester from the origin and the act from the signer", () => {
     const own = slot('s-1', { orderIndex: 1, returnUrl: 'https://dms.acme.example/contracts/2026-117?state=q8Zr' })
-    const t = returnTarget(detail([own], ACME), own, 'declined')
+    const t = returnTarget(detail([own], { name: 'Acme DMS' }), own, 'declined')
+    expect(t?.name).toBe('Acme DMS')
     expect(t?.href).toBe('https://dms.acme.example/contracts/2026-117?state=q8Zr&signingRequest=env-1&slot=1&outcome=declined')
   })
 
   it('names the envelope it shows even when the stored address claims another request', () => {
-    const stale: EnvelopeOrigin = { ...ACME, returnUrl: 'https://dms.acme.example/return?state=q8Zr&signingRequest=other' }
-    const t = returnTarget(detail([], stale), slot('s-1'), 'signed')
+    const stale = slot('s-1', { returnUrl: 'https://dms.acme.example/return?state=q8Zr&signingRequest=other' })
+    const t = returnTarget(detail([stale], ACME), stale, 'signed')
     expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&slot=1&outcome=signed')
   })
 
-  it('omits slot when the viewer has none, still naming the outcome', () => {
-    const t = returnTarget(detail([], ACME), null, 'cancelled')
-    expect(t?.href).toBe('https://dms.acme.example/return?state=q8Zr&signingRequest=env-1&outcome=cancelled')
-  })
-
   it('refuses a return address that is not https, and one that is not a URL', () => {
-    expect(returnTarget(detail([], { name: 'X', returnUrl: 'http://dms.acme.example/return' }), null, 'signed')).toBeNull()
-    expect(returnTarget(detail([], { name: 'X', returnUrl: 'not a url' }), null, 'signed')).toBeNull()
-    expect(returnTarget(detail([], { name: 'X', returnUrl: 'javascript:alert(1)' }), null, 'signed')).toBeNull()
+    const http = slot('s-1', { returnUrl: 'http://dms.acme.example/return' })
+    const junk = slot('s-1', { returnUrl: 'not a url' })
+    const script = slot('s-1', { returnUrl: 'javascript:alert(1)' })
+    expect(returnTarget(detail([http], { name: 'X' }), http, 'signed')).toBeNull()
+    expect(returnTarget(detail([junk], { name: 'X' }), junk, 'signed')).toBeNull()
+    expect(returnTarget(detail([script], { name: 'X' }), script, 'signed')).toBeNull()
   })
 })
 

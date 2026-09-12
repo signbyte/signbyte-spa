@@ -12,6 +12,8 @@ import { ApiError } from '@/lib/api'
 import { useEnvelopesStore, type SlotDraft } from '@/stores/envelopes'
 import { useSessionStore } from '@/stores/session'
 import { isPdf } from '@/lib/sigFormat'
+import { COUNTRY_WORD, collapsedInput, parseIdentityCode, placeholderFor } from '@/lib/identity-code'
+import { DEFAULT_COUNTRY, countryGroups, isSigningCountry } from '@/lib/signing-countries'
 
 // The guided new-signing flow: add one or more documents, review them, set
 // recipients, then commit. Every signing is an envelope — a self-sign builds and
@@ -22,7 +24,7 @@ import { isPdf } from '@/lib/sigFormat'
 // container's inner-file order.
 const router = useRouter()
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const docs = useDocumentsStore()
 const envelopes = useEnvelopesStore()
 const session = useSessionStore()
@@ -397,20 +399,116 @@ function typeLabel(f: { mime: string; name: string }): string {
 // --- Recipients ---
 const addCoSigner = ref(false)
 const coSigner = ref('')
+const coSignerCountry = ref(DEFAULT_COUNTRY)
 const order = ref<'sequential' | 'parallel'>('sequential')
 const coSignerError = ref(false)
 
-// A co-signer is bound to their slot by identity code (PNO/NTR/national code), not an
-// email: the envelope reaches them in their signing inbox when they sign in with the
-// matching eID. The UI checks a plausible code shape; the envelope service owns strict
-// resolution to a real identity at signing time.
-const coSignerValid = computed(() => {
-  const v = coSigner.value.trim()
+// A co-signer is bound to their slot by the identity code of a **natural person** — not
+// an email, and not an organisation: the envelope reaches them in their signing inbox
+// when they sign in with the matching eID, and nobody signs in as a company (a company's
+// e-seal is a signing method its people choose). A code as a person writes it carries no
+// country, so the country is chosen beside it — the pair is what identifies somebody, and
+// the same digits in two countries are two people.
+//
+// The check here is the only one anybody ever sees. The platform's public boundary
+// withholds error detail, so a code it refuses comes back naming no field at all: this
+// prevents that request rather than trying to explain it afterwards. Strict resolution
+// still happens where it belongs, against the certificate of whoever actually signs.
+const coSignerCode = computed(() => parseIdentityCode(coSigner.value, coSignerCountry.value))
+const coSignerValid = computed(() => coSignerCode.value.ok)
 
-  return v.length >= 6 && /^[A-Za-z0-9][A-Za-z0-9-]{4,}$/.test(v)
+// The countries a co-signer can be invited from, offered in the reader's own language.
+const countryOptions = computed(() => countryGroups(locale.value))
+
+const coSignerPlaceholder = computed(() => placeholderFor(coSignerCountry.value))
+
+// What the field shows once it is left: every way of writing one code becomes the one the
+// platform will use. A code that named its own country moves the dropdown to that country,
+// so the two controls never disagree about who is being invited.
+function settleCoSigner() {
+  const parsed = coSignerCode.value
+  if (!parsed.ok) return
+  if (parsed.code.countryFromValue && isSigningCountry(parsed.code.country)) {
+    coSignerCountry.value = parsed.code.country
+  }
+  coSigner.value = collapsedInput(parsed.code)
+}
+
+// Why a code cannot be used, said in a way somebody can act on. The country is named
+// grammatically where this language has a word for it, and by its own name where it does
+// not — so a country gaining a shape rule can never leave a sentence half-translated.
+const coSignerMessage = computed(() => {
+  const parsed = coSignerCode.value
+  if (parsed.ok) return ''
+  const word = COUNTRY_WORD[locale.value]?.[coSignerCountry.value]
+  const country = countryName(coSignerCountry.value)
+  switch (parsed.problem) {
+    case 'length':
+      return word
+        ? t('newSigning.recipients.errLength', { country: word, want: parsed.expected, got: parsed.actual })
+        : t('newSigning.recipients.errLengthOther', { country, want: parsed.expected, got: parsed.actual })
+    case 'digits':
+      return word
+        ? t('newSigning.recipients.errDigits', { country: word })
+        : t('newSigning.recipients.errDigitsOther', { country })
+    case 'notAPerson':
+      return t('newSigning.recipients.errNotAPerson', { type: parsed.type })
+    case 'unknownType':
+      return t('newSigning.recipients.errUnknownType', { type: parsed.type })
+    case 'ambiguous':
+      return t('newSigning.recipients.errAmbiguous')
+    case 'malformed':
+      return t('newSigning.recipients.errMalformed')
+    default:
+      return t('newSigning.recipients.error')
+  }
 })
 
-// Continue is gated: once a co-signer is added, a valid identity code is required before
+// A country's own name, for the sentences that cannot inflect it.
+function countryName(code: string): string {
+  try {
+    return new Intl.DisplayNames([locale.value], { type: 'region' }).of(code) || code
+  } catch {
+    return code
+  }
+}
+
+// What the Send step shows for the invited co-signer: their code as they would recognise
+// it, which is not always the spelling the platform stores.
+const coSignerShown = computed(() => {
+  const parsed = coSignerCode.value
+
+  return parsed.ok ? parsed.display : coSigner.value.trim()
+})
+
+// True once the field has been left with a code in it, which is when the collapse has
+// happened and there is something to confirm back.
+const coSignerSettled = ref(false)
+
+// Leaving the field (or pressing Enter) is what settles it: the code collapses, or the
+// reason it cannot be used appears. Typing again clears both — a message about what was
+// typed a moment ago is worse than none.
+function onCoSignerBlur() {
+  if (!coSigner.value.trim()) return
+  coSignerError.value = !coSignerValid.value
+  coSignerSettled.value = coSignerValid.value
+  settleCoSigner()
+}
+
+function onCoSignerInput() {
+  coSignerError.value = false
+  coSignerSettled.value = false
+}
+
+function removeCoSigner() {
+  addCoSigner.value = false
+  coSigner.value = ''
+  coSignerCountry.value = DEFAULT_COUNTRY
+  coSignerError.value = false
+  coSignerSettled.value = false
+}
+
+// Continue is gated: once a co-signer is added, a usable identity code is required before
 // the flow can proceed. Self-signing (no co-signer) is never gated.
 const canContinue = computed(() => !addCoSigner.value || coSignerValid.value)
 
@@ -538,7 +636,14 @@ async function fromRecipients() {
 function buildSlots(): SlotDraft[] {
   return [
     { orderIndex: 0, role: 'signer' },
-    { orderIndex: 1, role: 'signer', identityRef: coSigner.value.trim() },
+    {
+      orderIndex: 1,
+      role: 'signer',
+      identityRef: coSigner.value.trim(),
+      // The country goes beside the code, never folded into it: the service decides the
+      // one stored spelling, and it needs both halves to do that.
+      country: coSignerCountry.value,
+    },
   ]
 }
 
@@ -795,20 +900,61 @@ async function onDownload() {
                 <label class="block text-[12px] font-semibold text-muted-2" for="cosigner">
                   {{ t('newSigning.recipients.label') }}
                 </label>
-                <input
-                  id="cosigner"
-                  v-model="coSigner"
-                  type="text"
-                  autocomplete="off"
-                  spellcheck="false"
-                  :placeholder="t('newSigning.recipients.placeholder')"
-                  class="mt-2 w-full rounded-btn border bg-paper px-3 py-2 text-sm text-ink transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
+                <!-- The country and the code are ONE value, so they share one field frame:
+                     neither half identifies a person on its own. -->
+                <div
+                  class="mt-2 flex items-stretch overflow-hidden rounded-btn border bg-paper transition-colors focus-within:outline focus-within:outline-2 focus-within:outline-ink"
                   :class="coSignerError ? 'border-red' : 'border-line'"
-                  :aria-invalid="coSignerError"
-                  @input="coSignerError = false"
-                />
-                <p v-if="coSignerError" class="mt-2 text-[12.5px] text-red-fg" role="alert">
-                  {{ t('newSigning.recipients.error') }}
+                >
+                  <span class="relative flex items-stretch border-r" :class="coSignerError ? 'border-red' : 'border-line'">
+                    <select
+                      v-model="coSignerCountry"
+                      :aria-label="t('newSigning.recipients.countryLabel')"
+                      class="max-w-[14rem] appearance-none bg-band py-2 pl-3 pr-8 text-sm text-ink focus-visible:outline-none"
+                      @change="onCoSignerBlur()"
+                    >
+                      <optgroup
+                        v-for="g in countryOptions"
+                        :key="g.key"
+                        :label="t(`newSigning.recipients.countryGroup.${g.key}`)"
+                      >
+                        <option v-for="c in g.countries" :key="c.code" :value="c.code">{{ c.label }}</option>
+                      </optgroup>
+                    </select>
+                    <svg
+                      width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                      class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-muted"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 9l6 6 6-6" stroke-linecap="round" />
+                    </svg>
+                  </span>
+                  <input
+                    id="cosigner"
+                    v-model="coSigner"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    :placeholder="coSignerPlaceholder"
+                    class="min-w-0 flex-1 bg-transparent px-3 py-2 font-mono text-sm text-ink focus-visible:outline-none"
+                    :aria-invalid="coSignerError"
+                    :aria-describedby="coSignerError ? 'cosigner-error' : undefined"
+                    @input="onCoSignerInput()"
+                    @blur="onCoSignerBlur()"
+                    @keydown.enter.prevent="onCoSignerBlur()"
+                  />
+                </div>
+                <p v-if="coSignerError" id="cosigner-error" class="mt-2 text-[12.5px] text-red-fg" role="alert">
+                  {{ coSignerMessage }}
+                </p>
+                <p
+                  v-else-if="coSignerSettled"
+                  class="mt-2 flex items-start gap-1.5 text-[12.5px] text-green-deep"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" class="mt-0.5 shrink-0" aria-hidden="true">
+                    <path d="M5 12.5l4 4 10-11" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {{ t('newSigning.recipients.resolved') }}
                 </p>
 
                 <div class="mt-4">
@@ -832,7 +978,7 @@ async function onDownload() {
                 <button
                   type="button"
                   class="mt-4 text-[13px] font-semibold text-green-deep"
-                  @click="addCoSigner = false; coSigner = ''; coSignerError = false"
+                  @click="removeCoSigner()"
                 >
                   {{ t('newSigning.recipients.remove') }}
                 </button>
@@ -893,7 +1039,7 @@ async function onDownload() {
             <dt class="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">{{ t('newSigning.send.signers') }}</dt>
             <dd class="text-right text-sm text-ink">
               <span class="block">{{ session.identity?.name }} · {{ t('newSigning.send.you') }}</span>
-              <span class="block text-muted-2">{{ coSigner }}</span>
+              <span class="block font-mono text-muted-2">{{ coSignerShown }}</span>
             </dd>
           </div>
           <div class="flex justify-between gap-4 py-3">
