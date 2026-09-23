@@ -423,7 +423,7 @@
       "add": "Pievienot līdzparakstītāju",
       "remove": "Noņemt līdzparakstītāju",
       "label": "Līdzparakstītāja identitātes kods",
-      "placeholder": "555555-55555",
+      "placeholder": "XXXXXX-XXXXX",
       "error": "Ievadiet līdzparakstītāja identitātes kodu, lai parakstīt varētu īstā persona.",
       "orderLabel": "Parakstīšanas secība",
       "order": {

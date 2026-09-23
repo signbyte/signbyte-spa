@@ -423,7 +423,7 @@
       "add": "Add a co-signer",
       "remove": "Remove co-signer",
       "label": "Co-signer identity code",
-      "placeholder": "555555-55555",
+      "placeholder": "XXXXXX-XXXXX",
       "error": "Enter the co-signer's identity code so the right person can sign.",
       "orderLabel": "Signing order",
       "order": {

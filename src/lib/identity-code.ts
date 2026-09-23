@@ -1,6 +1,6 @@
 // A person's identity code, as it is typed into this portal and as the platform stores
 // it. The same signatory's code is written several ways — from a card certificate or an
-// identity provider it carries the identity type and the country ("PNOLV-555555-55555"),
+// identity provider it carries the identity type and the country ("PNOLV-XXXXXX-XXXXX"),
 // while a person types only their national code, with or without its separator. Compared
 // character by character those are different people.
 //
@@ -172,7 +172,7 @@ function assemble(code: IdentityCode): IdentityCodeOk {
 }
 
 // What to show a person. The country and the type are never dropped except where the
-// country's own spelling identifies the code on its own — "555555-55555" reads as a
+// country's own spelling identifies the code on its own — "XXXXXX-XXXXX" reads as a
 // personal number to a Latvian and to nobody else. Everywhere else the stored code is
 // shown, because a bare identifier would render a person, a foreign namesake holding the
 // same digits and an organisation's register number as one identical string. This is the
@@ -280,7 +280,7 @@ export function collapsedInput(code: IdentityCode): string {
 export function placeholderFor(country: string): string {
   if (!NATIONAL_SHAPES[country]) return ''
 
-  return country === 'LV' ? '555555-55555' : '33333333333'
+  return country === 'LV' ? 'XXXXXX-XXXXX' : 'XXXXXXXXXXX'
 }
 
 // Show a stored code — the form the platform holds, which is what a composed envelope

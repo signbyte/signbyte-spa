@@ -3,6 +3,13 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
+## v0.3.1
+
+**The identity-code fields show a pattern, not a code.** The example in an empty co-signer field reads
+`XXXXXX-XXXXX` for a Latvian personal code and `XXXXXXXXXXX` for the other Baltic formats, instead of a
+digit-shaped code. A real-looking example cannot be told from a real person's, and a person copying it
+would be inviting someone. Nothing about what the field accepts changed.
+
 ## v0.3.0
 
 **The way back belongs to one signer.** *Return to <requester>* is shown only to a signer the requester
