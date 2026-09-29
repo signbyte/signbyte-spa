@@ -41,6 +41,7 @@ async function cardsFor(loginMethod: string, permittedFlows: string[], locale: '
       name: spans.find((s) => s.classes().includes('font-semibold'))?.text() ?? '',
       tag: spans.find((s) => s.classes().includes('font-mono'))?.text() ?? '',
       desc: spans.find((s) => s.classes().includes('block'))?.text() ?? '',
+      note: spans.find((s) => s.classes().includes('font-mono') && s.classes().includes('block'))?.text() ?? '',
     }
   })
 }
@@ -79,6 +80,16 @@ describe('SigningView — the CSC method cards', () => {
       expect(cards[1].desc).not.toBe('')
       expect(cards[1].desc).not.toContain('signing.')
     }
+  })
+
+  it('the card-reader CSC card says what it needs on this computer, in both languages, and no other card does', async () => {
+    const en = await cardsFor('webEid', ['webEid', 'cscEidPlugin'], 'en')
+    expect(en[1].note).toBe('Needs eParakstītājs on this computer. A second PIN window may appear.')
+    expect(en[0].note).toBe('')
+    const lv = await cardsFor('webEid', ['webEid', 'cscEidPlugin'], 'lv')
+    expect(lv[1].note).toBe('Šajā datorā vajadzīgs eParakstītājs. Var parādīties otrs PIN logs.')
+    const scan = await cardsFor('eidScan', ['eidScan', 'cscEidScan'], 'en')
+    expect(scan.map((c) => c.note)).toEqual(['', ''])
   })
 
   it('an eParaksts Mobile login shows no CSC card', async () => {

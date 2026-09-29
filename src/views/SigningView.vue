@@ -33,7 +33,7 @@ const MIN_DWELL_MS = 800 // minimum visible time per waiting phase (one beat)
 
 const route = useRoute()
 const router = useRouter()
-const { t, locale } = useI18n()
+const { t, te, locale } = useI18n()
 const session = useSessionStore()
 const signing = useSigningStore()
 const docs = useDocumentsStore()
@@ -656,6 +656,11 @@ function goBack(): void {
                     </span>
                   </span>
                   <span class="mt-1 block text-[13px] leading-snug text-muted">{{ t(`signing.methodDesc.${f}`) }}</span>
+                  <!-- What a method needs on this computer, where it needs something: the card-reader CSC
+                       route reads the card through the provider's own browser extension. -->
+                  <span v-if="te(`signing.methodNote.${f}`)" class="mt-1 block font-mono text-[11px] text-muted-2">
+                    {{ t(`signing.methodNote.${f}`) }}
+                  </span>
                   <!-- Exactly one seal: the card names it; no pick is needed. -->
                   <span
                     v-if="f === flowEseal && seals.length === 1"

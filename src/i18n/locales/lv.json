@@ -212,6 +212,9 @@
       "cscEidPlugin": "Parakstiet ar ID karti lasītājā. Apstipriniet ar PIN 2.",
       "cscEidScan": "Skenējiet savu eID ar eID Scan lietotni un apstipriniet tur."
     },
+    "methodNote": {
+      "cscEidPlugin": "Šajā datorā vajadzīgs eParakstītājs. Var parādīties otrs PIN logs."
+    },
     "means": {
       "eyebrow": "Ko tas nozīmē",
       "body": "Jūs pielietojat kvalificētu elektronisko parakstu Long-Term (LT) profilā. Saskaņā ar eIDAS tam ir tāds pats juridiskais spēks kā pašrocīgam parakstam visā ES. No jūsu ierīces tiek nosūtīts tikai dokumenta jaucējkods, kur metode to atļauj."

@@ -212,6 +212,9 @@
       "cscEidPlugin": "Sign with the ID-card in your reader. You confirm with PIN 2.",
       "cscEidScan": "Scan your eID with the eID Scan app and confirm there."
     },
+    "methodNote": {
+      "cscEidPlugin": "Needs eParakstītājs on this computer. A second PIN window may appear."
+    },
     "means": {
       "eyebrow": "What this means",
       "body": "You are applying a Qualified Electronic Signature at the Long-Term (LT) profile. Under eIDAS it carries the same legal effect as a handwritten signature across the EU. Only a document hash leaves your device where the method allows."
