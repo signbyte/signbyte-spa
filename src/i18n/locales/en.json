@@ -193,21 +193,24 @@
       "eidScan": "eID Scan",
       "eparakstsMobile": "eParaksts Mobile",
       "eparakstsMobileEseal": "eParaksts Mobile (e-seal)",
-      "csc": "Cloud signature"
+      "cscEidPlugin": "CSC API",
+      "cscEidScan": "CSC API"
     },
     "methodTag": {
       "webEid": "This device",
       "eidScan": "Phone",
       "eparakstsMobile": "Phone app",
       "eparakstsMobileEseal": "e-Seal",
-      "csc": "Cloud"
+      "cscEidPlugin": "This device",
+      "cscEidScan": "Phone"
     },
     "methodDesc": {
       "webEid": "Sign with the ID-card in your reader. You confirm with PIN 2.",
       "eidScan": "Scan your eID with the eID Scan app and confirm there.",
       "eparakstsMobile": "Approve the signature in the eParaksts Mobile app on your phone.",
       "eparakstsMobileEseal": "Apply your organisation e-seal via eParaksts Mobile.",
-      "csc": "Authorise a remote signature with your cloud certificate."
+      "cscEidPlugin": "Sign with the ID-card in your reader. You confirm with PIN 2.",
+      "cscEidScan": "Scan your eID with the eID Scan app and confirm there."
     },
     "means": {
       "eyebrow": "What this means",

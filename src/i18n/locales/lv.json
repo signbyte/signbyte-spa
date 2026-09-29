@@ -193,21 +193,24 @@
       "eidScan": "eID Scan",
       "eparakstsMobile": "eParaksts Mobile",
       "eparakstsMobileEseal": "eParaksts Mobile (e-zīmogs)",
-      "csc": "Mākoņa paraksts"
+      "cscEidPlugin": "CSC API",
+      "cscEidScan": "CSC API"
     },
     "methodTag": {
       "webEid": "Šī ierīce",
       "eidScan": "Telefons",
       "eparakstsMobile": "Telefona lietotne",
       "eparakstsMobileEseal": "E-zīmogs",
-      "csc": "Mākonis"
+      "cscEidPlugin": "Šī ierīce",
+      "cscEidScan": "Telefons"
     },
     "methodDesc": {
       "webEid": "Parakstiet ar ID karti lasītājā. Apstipriniet ar PIN 2.",
       "eidScan": "Skenējiet savu eID ar eID Scan lietotni un apstipriniet tur.",
       "eparakstsMobile": "Apstipriniet parakstu eParaksts Mobile lietotnē telefonā.",
       "eparakstsMobileEseal": "Pielietojiet organizācijas e-zīmogu, izmantojot eParaksts Mobile.",
-      "csc": "Autorizējiet attālinātu parakstu ar savu mākoņa sertifikātu."
+      "cscEidPlugin": "Parakstiet ar ID karti lasītājā. Apstipriniet ar PIN 2.",
+      "cscEidScan": "Skenējiet savu eID ar eID Scan lietotni un apstipriniet tur."
     },
     "means": {
       "eyebrow": "Ko tas nozīmē",

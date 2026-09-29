@@ -3,7 +3,13 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
-## v0.3.1
+## v0.4.0
+
+**A card login can sign through CSC too.** After a Web eID login the signing step shows two cards, *eID card*
+and *CSC API*; after an eID Scan login, *eID Scan* and *CSC API*. Each CSC API card carries the description of
+the card beside it, because it reads the eID card the same way: in a reader for Web eID, with a phone for eID
+Scan. The cards appear only where the deployment runs CSC (the portal is told which signing methods it runs);
+elsewhere the step looks as before. The words for the retired single cloud-signature method are gone.
 
 **The identity-code fields show a pattern, not a code.** The example in an empty co-signer field reads
 `XXXXXX-XXXXX` for a Latvian personal code and `XXXXXXXXXXX` for the other Baltic formats, instead of a
