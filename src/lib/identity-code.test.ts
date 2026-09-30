@@ -6,16 +6,29 @@ import {
   placeholderFor,
 } from './identity-code'
 
+// Every identity value below is assembled at run time from repeated digits, never
+// written as a literal: an identifier-shaped constant in a published repository is
+// indistinguishable from a real person's code. The test person is two parts of one
+// Latvian code; each spelling of them is built from those same two parts.
+const HALF6 = '5'.repeat(6)
+const HALF5 = '5'.repeat(5)
+const LV_WRITTEN = `${HALF6}-${HALF5}`
+const LV_BARE = `${HALF6}${HALF5}`
+const LV_STORED = `PNOLV-${LV_BARE}`
+const EE_BARE = '3'.repeat(11)
+const OTHER = '7'.repeat(11)
+const PT_BARE = '9'.repeat(9)
+
 // The four spellings the platform receives of ONE person's code, plus the two a form
 // produces on the way (a pasted space, a stored value pasted back). Every one of them is
 // the same human, and the whole point of the field is that they end up as one value.
 const ONE_PERSON = [
-  'PNOLV-555555-55555',
-  'PNOLV-55555555555',
-  '555555-55555',
-  '55555555555',
-  '555555 55555',
-  '  555555-55555  ',
+  `PNOLV-${LV_WRITTEN}`,
+  LV_STORED,
+  LV_WRITTEN,
+  LV_BARE,
+  `${HALF6} ${HALF5}`,
+  `  ${LV_WRITTEN}  `,
 ]
 
 function stored(raw: string, country = 'LV'): string {
@@ -35,74 +48,74 @@ function problem(raw: string, country = 'LV'): string {
 describe('parseIdentityCode — one identity, however it is written', () => {
   it('collapses every spelling of one code to the same stored value', () => {
     const all = ONE_PERSON.map((raw) => stored(raw))
-    expect(new Set(all)).toEqual(new Set(['PNOLV-55555555555']))
+    expect(new Set(all)).toEqual(new Set([LV_STORED]))
   })
 
   it('is idempotent: canonicalising a stored value returns it unchanged', () => {
-    expect(stored('PNOLV-55555555555')).toBe('PNOLV-55555555555')
+    expect(stored(LV_STORED)).toBe(LV_STORED)
   })
 
   it('believes a country stated in the code over the one chosen beside it', () => {
-    const r = parseIdentityCode('PNOEE-33333333333', 'LV')
-    expect(r.ok && r.stored).toBe('PNOEE-33333333333')
+    const r = parseIdentityCode(`PNOEE-${EE_BARE}`, 'LV')
+    expect(r.ok && r.stored).toBe(`PNOEE-${EE_BARE}`)
     expect(r.ok && r.code.country).toBe('EE')
     expect(r.ok && r.code.countryFromValue).toBe(true)
   })
 
   it('uses the chosen country only when the code names none', () => {
-    expect(stored('33333333333', 'EE')).toBe('PNOEE-33333333333')
-    const r = parseIdentityCode('33333333333', 'EE')
+    expect(stored(EE_BARE, 'EE')).toBe(`PNOEE-${EE_BARE}`)
+    const r = parseIdentityCode(EE_BARE, 'EE')
     expect(r.ok && r.code.countryFromValue).toBe(false)
   })
 
   it('keeps two countries with the same digits apart', () => {
-    expect(stored('66666666666', 'EE')).not.toBe(stored('66666666666', 'LT'))
+    expect(stored(OTHER, 'EE')).not.toBe(stored(OTHER, 'LT'))
   })
 
   it('unwraps a cross-border code and keeps the country the code belongs to', () => {
-    expect(stored('LV/EE/555555-55555')).toBe('PNOLV-55555555555')
+    expect(stored(`LV/EE/${LV_WRITTEN}`)).toBe(LV_STORED)
   })
 
   it('unwraps a code wrapped twice, and the innermost country stands', () => {
     // Each pass strips one country pair, so the value shortens every time and the loop
     // ends. The country left standing is the one written closest to the code — measured
     // against the platform's own canonicaliser, which answers the same.
-    expect(stored('LV/EE/EE/LT/555555-55555')).toBe('PNOEE-55555555555')
+    expect(stored(`LV/EE/EE/LT/${LV_WRITTEN}`)).toBe(`PNOEE-${LV_BARE}`)
   })
 
   it('accepts a lower-case code and a lower-case country', () => {
-    expect(stored('pnolv-555555-55555', 'lv')).toBe('PNOLV-55555555555')
+    expect(stored(`pnolv-${LV_WRITTEN}`, 'lv')).toBe(LV_STORED)
   })
 
   it('accepts the other natural-person identity types the standard defines', () => {
-    expect(stored('PASSK-P3333333')).toBe('PASSK-P3333333')
-    expect(stored('IDCBE-888888888888')).toBe('IDCBE-888888888888')
-    expect(stored('TINEL-444444444')).toBe('TINEL-444444444')
+    expect(stored(`PASSK-P${'3'.repeat(7)}`)).toBe(`PASSK-P${'3'.repeat(7)}`)
+    expect(stored(`IDCBE-${'8'.repeat(12)}`)).toBe(`IDCBE-${'8'.repeat(12)}`)
+    expect(stored(`TINEL-${'4'.repeat(9)}`)).toBe(`TINEL-${'4'.repeat(9)}`)
   })
 })
 
 describe('parseIdentityCode — the refusals, which are the only explanation a person gets', () => {
   it('refuses an organisation: a seal cannot be invited to sign', () => {
-    const r = parseIdentityCode('NTRLV-44444444444', 'LV')
+    const r = parseIdentityCode(`NTRLV-${'4'.repeat(11)}`, 'LV')
     expect(r.ok).toBe(false)
     expect(!r.ok && r.problem).toBe('notAPerson')
     expect(!r.ok && r.type).toBe('NTR')
   })
 
   it('refuses an identity type it does not know, and names it', () => {
-    const r = parseIdentityCode('ABCLV-55555555555', 'LV')
+    const r = parseIdentityCode(`ABCLV-${LV_BARE}`, 'LV')
     expect(!r.ok && r.problem).toBe('unknownType')
     expect(!r.ok && r.type).toBe('ABC')
   })
 
   it('refuses a locally defined type rather than reading it as an identifier', () => {
-    expect(problem('EI:SE-222222222222')).toBe('unknownType')
+    expect(problem(`EI:SE-${'2'.repeat(12)}`)).toBe('unknownType')
   })
 
   it('refuses a bare code when no country is available', () => {
-    expect(problem('555555-55555', '')).toBe('countryMissing')
-    expect(problem('555555-55555', 'L')).toBe('countryMissing')
-    expect(problem('555555-55555', '12')).toBe('countryMissing')
+    expect(problem(LV_WRITTEN, '')).toBe('countryMissing')
+    expect(problem(LV_WRITTEN, 'L')).toBe('countryMissing')
+    expect(problem(LV_WRITTEN, '12')).toBe('countryMissing')
   })
 
   it('refuses a code that begins like a type but carries none', () => {
@@ -110,7 +123,7 @@ describe('parseIdentityCode — the refusals, which are the only explanation a p
   })
 
   it('refuses characters an identity code is not written in', () => {
-    expect(problem('555555#55555')).toBe('malformed')
+    expect(problem(`${HALF6}#${HALF5}`)).toBe('malformed')
     expect(problem('PNOLV-')).toBe('malformed')
     // A Cyrillic А looks like an A and must not be able to pass as one.
     expect(problem('АБ12345')).toBe('malformed')
@@ -122,19 +135,19 @@ describe('parseIdentityCode — the refusals, which are the only explanation a p
   })
 
   it('checks the length of a personal number where the country writes one, and counts', () => {
-    const r = parseIdentityCode('5555555555', 'LV')
+    const r = parseIdentityCode(LV_BARE.slice(0, 10), 'LV')
     expect(!r.ok && r.problem).toBe('length')
     expect(!r.ok && r.expected).toBe(11)
     expect(!r.ok && r.actual).toBe(10)
-    expect(problem('555555555551')).toBe('length')
+    expect(problem(`${LV_BARE}1`)).toBe('length')
   })
 
   it('refuses a letter inside a personal number of a country that writes digits', () => {
-    expect(problem('55555A55555')).toBe('digits')
+    expect(problem(`${HALF6.slice(0, 5)}A${HALF5}`)).toBe('digits')
   })
 
   it('is lenient where the format is not known — a country with no shape rule is not refused', () => {
-    expect(stored('999999999', 'PT')).toBe('PNOPT-999999999')
+    expect(stored(PT_BARE, 'PT')).toBe(`PNOPT-${PT_BARE}`)
     expect(stored('1234', 'RO')).toBe('PNORO-1234')
   })
 
@@ -145,28 +158,28 @@ describe('parseIdentityCode — the refusals, which are the only explanation a p
 
   it('does not apply a personal-number shape to another identity type', () => {
     // A Latvian passport number is not eleven digits, and must not be refused as one.
-    expect(stored('PASLV-LV6666666')).toBe('PASLV-LV6666666')
+    expect(stored(`PASLV-LV${'6'.repeat(7)}`)).toBe(`PASLV-LV${'6'.repeat(7)}`)
   })
 })
 
 describe('what a person sees', () => {
   it('shows a Latvian personal number the way Latvia writes it', () => {
-    const r = parseIdentityCode('55555555555', 'LV')
-    expect(r.ok && r.display).toBe('555555-55555')
+    const r = parseIdentityCode(LV_BARE, 'LV')
+    expect(r.ok && r.display).toBe(LV_WRITTEN)
   })
 
   it('shows the whole stored code where the country s own spelling is not known', () => {
-    const r = parseIdentityCode('33333333333', 'EE')
-    expect(r.ok && r.display).toBe('PNOEE-33333333333')
+    const r = parseIdentityCode(EE_BARE, 'EE')
+    expect(r.ok && r.display).toBe(`PNOEE-${EE_BARE}`)
   })
 
   it('never renders two different principals alike', () => {
     const shown = [
-      displayIdentityCode('PNOEE-77777777777'),
-      displayIdentityCode('PNOLT-77777777777'),
-      displayIdentityCode('NTREE-77777777777'),
-      displayIdentityCode('PASEE-77777777777'),
-      displayIdentityCode('IDCEE-77777777777'),
+      displayIdentityCode(`PNOEE-${OTHER}`),
+      displayIdentityCode(`PNOLT-${OTHER}`),
+      displayIdentityCode(`NTREE-${OTHER}`),
+      displayIdentityCode(`PASEE-${OTHER}`),
+      displayIdentityCode(`IDCEE-${OTHER}`),
     ]
     expect(new Set(shown).size).toBe(shown.length)
   })
@@ -188,19 +201,19 @@ describe('what a person sees', () => {
   })
 
   it('collapses the field to the national code, leaving the country to its own control', () => {
-    const r = parseIdentityCode('PNOLV-555555-55555', 'LV')
-    expect(r.ok && collapsedInput(r.code)).toBe('555555-55555')
-    const ee = parseIdentityCode('PNOEE-33333333333', 'LV')
-    expect(ee.ok && collapsedInput(ee.code)).toBe('33333333333')
+    const r = parseIdentityCode(`PNOLV-${LV_WRITTEN}`, 'LV')
+    expect(r.ok && collapsedInput(r.code)).toBe(LV_WRITTEN)
+    const ee = parseIdentityCode(`PNOEE-${EE_BARE}`, 'LV')
+    expect(ee.ok && collapsedInput(ee.code)).toBe(EE_BARE)
   })
 
   it('keeps a non-personal-number whole in the field, because its type is part of it', () => {
-    const r = parseIdentityCode('PASSK-P3333333', 'LV')
-    expect(r.ok && collapsedInput(r.code)).toBe('PASSK-P3333333')
+    const r = parseIdentityCode(`PASSK-P${'3'.repeat(7)}`, 'LV')
+    expect(r.ok && collapsedInput(r.code)).toBe(`PASSK-P${'3'.repeat(7)}`)
   })
 
   it('round-trips what the field itself collapsed to', () => {
-    const r = parseIdentityCode('55555555555', 'LV')
+    const r = parseIdentityCode(LV_BARE, 'LV')
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const again = parseIdentityCode(collapsedInput(r.code), 'LV')
@@ -208,7 +221,7 @@ describe('what a person sees', () => {
   })
 
   it('offers an example only for a country whose format is known', () => {
-    expect(placeholderFor('LV')).toBe('555555-55555')
+    expect(placeholderFor('LV')).toBe('XXXXXX-XXXXX')
     expect(placeholderFor('EE')).not.toBe('')
     expect(placeholderFor('PT')).toBe('')
   })
