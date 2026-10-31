@@ -3,6 +3,13 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
+## v0.4.1
+
+**The sign-in buttons ask for a method by the auth service's own name.** *eParaksts Mobile* and *eID Scan* send
+`eparakstsMobile` and `eidScan` to `POST /api/portal/v1/login/start`, no longer the identity provider's codes; the auth
+service translates them for its provider. **Needs an auth service that reads its own method names** (authbyte v0.3.0)
+behind a portal API that passes them on (signbyte-bff v0.3.2). Nothing on the screen changes.
+
 ## v0.4.0
 
 **A card login can sign through CSC too.** After a Web eID login the signing step shows two cards, *eID card*

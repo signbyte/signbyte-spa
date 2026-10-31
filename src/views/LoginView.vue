@@ -12,18 +12,18 @@ import ExtensionMissingCard from '@/components/ExtensionMissingCard.vue'
 
 // The login methods the portal offers, in the design's order (mobile app · card ·
 // scan). Redirect methods hand the browser to the national eID provider (the API
-// returns where to send it); the card method runs the in-browser Web eID handshake.
-// The user never types a password or code here.
+// returns where to send it), asking the auth service for the method by its id,
+// which is the auth service's own name for it; the card method runs the in-browser
+// Web eID handshake. The user never types a password or code here.
 interface Method {
   id: 'eparakstsMobile' | 'eidScan' | 'webEid'
-  acr?: string
   card?: boolean
 }
 
 const METHODS: Method[] = [
-  { id: 'eparakstsMobile', acr: 'urn:eparaksts:authentication:flow:mobileid' },
+  { id: 'eparakstsMobile' },
   { id: 'webEid', card: true },
-  { id: 'eidScan', acr: 'urn:eparaksts:authentication:flow:mobile-eid' },
+  { id: 'eidScan' },
 ]
 
 // Where to land after login; only a same-origin path is honoured.
@@ -59,7 +59,7 @@ async function start(method: Method) {
       // can restore it after the round-trip, then send the browser to the provider.
       sessionStorage.setItem(POST_LOGIN_KEY, intendedRoute())
       const { authorize_url } = await api.post<{ authorize_url: string }>('/login/start', {
-        acr_values: method.acr,
+        acr_values: method.id,
       })
       window.location.assign(authorize_url)
     }
