@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { api, toApiError, ApiError } from './api'
+import { api, csrfFrom, toApiError, ApiError } from './api'
 
 describe('toApiError', () => {
   it('reads the stable code from the problem+json envelope (the `code` field)', () => {
@@ -67,5 +67,18 @@ describe('error body parsing', () => {
       status: 422,
       code: 'err:verify:malformed',
     })
+  })
+})
+
+describe('the anti-forgery token a change echoes', () => {
+  it.each([
+    ['over https, the __Host- cookie beside a planted plain one listed first', 'portal_csrf=planted; __Host-portal_csrf=own', true, 'own'],
+    ['over https, only a planted plain one', 'portal_csrf=planted', true, null],
+    ['over https, only a planted __Secure- one', '__Secure-portal_csrf=planted', true, null],
+    ['over https, a miscapitalised __Host- one', '__host-portal_csrf=planted', true, null],
+    ['over plain http, the plain one a development API sets', 'portal_csrf=tok', false, 'tok'],
+    ['over plain http, the __Host- one before the plain', 'portal_csrf=planted; __Host-portal_csrf=own', false, 'own'],
+  ])('%s', (_case, cookies, secure, want) => {
+    expect(csrfFrom(cookies, secure)).toBe(want)
   })
 })

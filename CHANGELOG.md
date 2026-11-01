@@ -5,6 +5,12 @@ deploys the portal or integrates against it.
 
 ## v0.4.1
 
+**The anti-forgery token is read from the portal API's own cookie only.** On an https page the application reads
+`__Host-portal_csrf`, which only the API's host can set, and never the plain-named `portal_csrf`: a copy another host
+planted under that name, listed first, made every change send a token the API refuses. A page over plain http falls
+back to the plain name, as a development API sets it. **Needs a portal API that sets its cookies as `__Host-`**
+(signbyte-bff v0.3.2): against an older one served over https, every change is refused.
+
 **The sign-in buttons ask for a method by the auth service's own name.** *eParaksts Mobile* and *eID Scan* send
 `eparakstsMobile` and `eidScan` to `POST /api/portal/v1/login/start`, no longer the identity provider's codes; the auth
 service translates them for its provider. **Needs an auth service that reads its own method names** (authbyte v0.3.0)
