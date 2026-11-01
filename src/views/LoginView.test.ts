@@ -37,10 +37,12 @@ describe('LoginView', () => {
     assign.mockReset()
   })
 
-  // Each redirect button asks for its method by the auth service's own name; a
-  // provider's code is never sent from here.
+  // Each button asks for its method by the auth service's own name; a provider's
+  // code is never sent from here. The card is a redirect too: the auth service
+  // reads it on its own sign-in page.
   it.each([
     ['eParaksts Mobile', 'eparakstsMobile'],
+    ['eID card', 'webEid'],
     ['eID Scan', 'eidScan'],
   ])('%s asks the sign-in for %s', async (label, method) => {
     const w = await mountLogin()

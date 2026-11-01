@@ -5,6 +5,13 @@ deploys the portal or integrates against it.
 
 ## v0.4.1
 
+**The eID card button signs in on the auth service's own page.** Like the other two ways, it starts a sign-in
+naming the card (`acr_values=webEid`) and sends the browser to the auth service, which reads the card on its own
+sign-in page and sends the browser back signed in. The application no longer reads the card at sign-in, so the
+card's sign-in states (waiting for the card, no card software) are the auth service's page's. Card signing is
+unchanged: it still reads the card here. **Needs an auth service that reads the card on its page** (authbyte
+v0.4.0); against an older one, the card button's sign-in is refused at the auth service.
+
 **The anti-forgery token is read from the portal API's own cookie only.** On an https page the application reads
 `__Host-portal_csrf`, which only the API's host can set, and never the plain-named `portal_csrf`: a copy another host
 planted under that name, listed first, made every change send a token the API refuses. A page over plain http falls
