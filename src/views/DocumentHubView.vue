@@ -461,10 +461,10 @@ async function addArchiveTimestamp() {
     await docs.archiveTimestamp(headId.value)
     await refresh()
   } catch (e) {
-    // The timestamp is requested in the user's name, and this session no longer
-    // holds their certificate: go capture one — straight to the re-authentication
-    // consent window, exactly like every redirect flow, and retry on return. No
-    // interstitial; the pending archive rides session storage across the redirect.
+    // The timestamp is requested in the user's name, and this session holds no
+    // certificate of theirs: go capture one — straight into a fresh sign-in with
+    // the session's own way, and retry on return. No interstitial; the pending
+    // archive rides session storage across the redirect.
     if (e instanceof ApiError && e.code === 'err:signing:authCertificateRequired') {
       if (await reauthForArchive()) return
     }
@@ -474,12 +474,13 @@ async function addArchiveTimestamp() {
   }
 }
 
-// Start the same-method re-authentication that re-captures the session's signing
-// capabilities, stashing the pending archive so the return retries it. False when
-// the redirect could not start (the caller then shows the original error).
+// Start a fresh sign-in with the session's own way, whose new session carries the
+// signing capabilities it captured, stashing the pending archive so the return
+// retries it. False when the redirect could not start (the caller then shows the
+// original error).
 async function reauthForArchive(): Promise<boolean> {
   try {
-    const url = await session.stepUp(session.identity?.loginMethod ?? '')
+    const url = await session.signInAgain(session.identity?.loginMethod ?? '')
     if (!url) return false
     sessionStorage.setItem(pendingArchiveKey, JSON.stringify({ doc: id.value, at: Date.now() }))
     window.location.assign(url)
