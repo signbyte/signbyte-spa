@@ -3,6 +3,26 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
+## v0.4.1
+
+**The eID card button signs in on the auth service's own page.** Like the other two ways, it starts a sign-in
+naming the card (`acr_values=webEid`) and sends the browser to the auth service, which reads the card on its own
+sign-in page and sends the browser back signed in. The application no longer reads the card at sign-in, so the
+card's sign-in states (waiting for the card, no card software) are the auth service's page's. Card signing is
+unchanged: it still reads the card here. **Needs an auth service that reads the card on its page** (authbyte
+v0.4.0); against an older one, the card button's sign-in is refused at the auth service.
+
+**The anti-forgery token is read from the portal API's own cookie only.** On an https page the application reads
+`__Host-portal_csrf`, which only the API's host can set, and never the plain-named `portal_csrf`: a copy another host
+planted under that name, listed first, made every change send a token the API refuses. A page over plain http falls
+back to the plain name, as a development API sets it. **Needs a portal API that sets its cookies as `__Host-`**
+(signbyte-bff v0.3.2): against an older one served over https, every change is refused.
+
+**The sign-in buttons ask for a method by the auth service's own name.** *eParaksts Mobile* and *eID Scan* send
+`eparakstsMobile` and `eidScan` to `POST /api/portal/v1/login/start`, no longer the identity provider's codes; the auth
+service translates them for its provider. **Needs an auth service that reads its own method names** (authbyte v0.3.0)
+behind a portal API that passes them on (signbyte-bff v0.3.2). Nothing on the screen changes.
+
 ## v0.4.0
 
 **A card login can sign through CSC too.** After a Web eID login the signing step shows two cards, *eID card*

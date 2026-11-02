@@ -70,14 +70,6 @@ export function isExtensionMissing(err: unknown): boolean {
   return typeof code === 'string' && /EXTENSION|NATIVE|UNAVAILABLE/i.test(code)
 }
 
-// Sign the challenge nonce with the card; returns the opaque auth token the API
-// forwards verbatim to the Auth Service.
-export async function authenticateWithCard(nonce: string, lang: string): Promise<unknown> {
-  const webeid = await loadWebEid()
-
-  return webeid.authenticate(nonce, { lang })
-}
-
 // Read the card's SIGNING certificate (PIN 1). The signing service uses it to
 // compute the per-document digest the card will then sign. A certificate is public
 // data, not a secret.

@@ -36,12 +36,26 @@ export function setUnauthorizedHandler(fn: () => void): void {
   onUnauthorized = fn
 }
 
-function readCookie(name: string): string | null {
+function readCookie(cookies: string, name: string): string | null {
   const prefix = `${name}=`
-  for (const part of document.cookie.split('; ')) {
+  for (const part of cookies.split('; ')) {
     if (part.startsWith(prefix)) return decodeURIComponent(part.slice(prefix.length))
   }
   return null
+}
+
+/**
+ * The anti-forgery token in a page's cookies. Over TLS the API sets every cookie Secure
+ * and so names this one `__Host-`, which only its own host can set; on an https page
+ * only that name is read, so a copy another host planted under the plain name is never
+ * echoed in its place. A page over plain http, where a development API uses the plain
+ * name, falls back to it.
+ */
+export function csrfFrom(cookies: string, secure: boolean): string | null {
+  const own = readCookie(cookies, `__Host-${CSRF_COOKIE}`)
+  if (own !== null) return own
+  if (secure) return null
+  return readCookie(cookies, CSRF_COOKIE)
 }
 
 interface RequestOptions {
@@ -73,7 +87,7 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
   }
 
   if (MUTATING.has(method)) {
-    const csrf = readCookie(CSRF_COOKIE)
+    const csrf = csrfFrom(document.cookie, location.protocol === 'https:')
     if (csrf) headers[CSRF_HEADER] = csrf
   }
 

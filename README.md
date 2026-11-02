@@ -14,8 +14,9 @@ link goes to login first and is returned to their target.
 It is a static single-page application. It talks **only** to the portal API (the
 backend-for-frontend) and holds **no** token, signing key, or durable data — just an
 http-only session cookie and a readable anti-forgery token, plus transient in-memory
-UI state. The only cryptography in the browser is the eID card's own, run through the
-vendored Web eID library.
+UI state. The only cryptography in this application is the eID card's own when it
+signs, run through the vendored Web eID library. Every sign-in, the card's too, is a
+redirect: the auth service reads the card on its own sign-in page.
 
 ## Stack
 

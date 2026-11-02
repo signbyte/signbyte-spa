@@ -1,47 +1,34 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { api } from '@/lib/api'
-import { useSessionStore } from '@/stores/session'
-import { authenticateWithCard, isExtensionMissing } from '@/lib/webeid'
 import { Button } from '@/components/ui/button'
 import BrandMark from '@/components/BrandMark.vue'
 import AuthResultCard from '@/components/AuthResultCard.vue'
-import ExtensionMissingCard from '@/components/ExtensionMissingCard.vue'
 
 // The login methods the portal offers, in the design's order (mobile app · card ·
-// scan). Redirect methods hand the browser to the national eID provider (the API
-// returns where to send it); the card method runs the in-browser Web eID handshake.
-// The user never types a password or code here.
+// scan). Each hands the browser to the auth service (the API returns where to send
+// it), asking for the method by its id, which is the auth service's own name for it.
+// The auth service reads the card on its own sign-in page and sends the browser on
+// to the national eID provider for the others. The user never types a password or
+// code here.
 interface Method {
   id: 'eparakstsMobile' | 'eidScan' | 'webEid'
-  acr?: string
-  card?: boolean
 }
 
-const METHODS: Method[] = [
-  { id: 'eparakstsMobile', acr: 'urn:eparaksts:authentication:flow:mobileid' },
-  { id: 'webEid', card: true },
-  { id: 'eidScan', acr: 'urn:eparaksts:authentication:flow:mobile-eid' },
-]
+const METHODS: Method[] = [{ id: 'eparakstsMobile' }, { id: 'webEid' }, { id: 'eidScan' }]
 
 // Where to land after login; only a same-origin path is honoured.
 const POST_LOGIN_KEY = 'signbyte.postLogin'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const route = useRoute()
-const router = useRouter()
-const session = useSessionStore()
 
-// The screen has four stages in one route: the method picker, a "signing you in"
-// spinner while the round-trip runs, an extension-missing guidance card (card login
-// only), and a generic failed card. A redirect method navigates away during
-// 'returning'; the card method resolves in place.
-const stage = ref<'select' | 'returning' | 'extensionMissing' | 'failed'>('select')
+// The screen has three stages in one route: the method picker, a "signing you in"
+// spinner while the browser is sent on, and a generic failed card.
+const stage = ref<'select' | 'returning' | 'failed'>('select')
 const pickedMethod = ref('')
-
-const cardMethod = METHODS.find((m) => m.card)
 
 function intendedRoute(): string {
   const r = route.query.redirect
@@ -52,46 +39,17 @@ async function start(method: Method) {
   pickedMethod.value = t(`login.method.${method.id}`)
   stage.value = 'returning'
   try {
-    if (method.card) {
-      await loginWithCard()
-    } else {
-      // Redirect flow: stash the intended route (a non-secret path) so the callback
-      // can restore it after the round-trip, then send the browser to the provider.
-      sessionStorage.setItem(POST_LOGIN_KEY, intendedRoute())
-      const { authorize_url } = await api.post<{ authorize_url: string }>('/login/start', {
-        acr_values: method.acr,
-      })
-      window.location.assign(authorize_url)
-    }
+    // Stash the intended route (a non-secret path) so the callback can restore it
+    // after the round-trip, then send the browser to the auth service.
+    sessionStorage.setItem(POST_LOGIN_KEY, intendedRoute())
+    const { authorize_url } = await api.post<{ authorize_url: string }>('/login/start', {
+      acr_values: method.id,
+    })
+    window.location.assign(authorize_url)
   } catch (err) {
     stage.value = 'failed'
     console.warn('login failed', err)
   }
-}
-
-async function loginWithCard() {
-  // No browser navigation: get a challenge, sign it with the card, complete, load
-  // the session, then route on.
-  const { nonce, state } = await api.post<{ nonce: string; state: string }>(
-    '/login/webeid/start',
-  )
-  let authToken: unknown
-  try {
-    authToken = await authenticateWithCard(nonce, locale.value)
-  } catch (err) {
-    // A missing extension gets the "what you need" guidance; anything else is generic.
-    stage.value = isExtensionMissing(err) ? 'extensionMissing' : 'failed'
-
-    return
-  }
-  await api.post('/login/webeid/complete', { state, authToken })
-  await session.fetchMe()
-  router.replace(intendedRoute())
-}
-
-// Retry the card login from the extension-missing card ("I've installed it — retry").
-function retryCard() {
-  if (cardMethod) void start(cardMethod)
 }
 </script>
 
@@ -199,13 +157,6 @@ function retryCard() {
         variant="returning"
         :title="t('login.signingIn')"
         :body="t('login.returning.body', { method: pickedMethod })"
-      />
-
-      <!-- Extension missing (card login): what-you-need guidance + install link. -->
-      <ExtensionMissingCard
-        v-else-if="stage === 'extensionMissing'"
-        @retry="retryCard"
-        @another="stage = 'select'"
       />
 
       <!-- Failed: sign-in didn't complete -->
