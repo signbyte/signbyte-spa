@@ -95,15 +95,16 @@ export const useSessionStore = defineStore('session', () => {
     return logoutUrl
   }
 
-  // Re-authenticate within the session (the step-up flow, usually with the
-  // same method). Returns the authorization URL the caller must navigate the
-  // browser to; completing it updates the session in place — including
-  // re-capturing the signing capabilities — and returns the browser to the app.
-  async function stepUp(method: string): Promise<string | null> {
-    const res = await api.post<{ authorize_url?: string }>('/step-up', { method })
+  // Start a fresh sign-in with the given way (usually the session's own), for a
+  // step that needs what a sign-in captures — the signing capabilities. Returns
+  // the authorization URL the caller must navigate the browser to; completing it
+  // makes a new session and returns the browser to the app. An empty way lets
+  // the person pick on the sign-in page.
+  async function signInAgain(method: string): Promise<string | null> {
+    const res = await api.post<{ authorize_url?: string }>('/login/start', method ? { acr_values: method } : {})
 
     return res?.authorize_url ?? null
   }
 
-  return { identity, status, isAuthenticated, permittedFlows, fetchMe, logout, stepUp }
+  return { identity, status, isAuthenticated, permittedFlows, fetchMe, logout, signInAgain }
 })

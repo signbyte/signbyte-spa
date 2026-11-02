@@ -3,6 +3,15 @@
 Notable changes to this application, newest first, per release. This file is written for whoever
 deploys the portal or integrates against it.
 
+## v0.4.2
+
+**Adding an archive timestamp with no captured certificate signs the person in again.** When the session holds none
+of the person's certificate, the application starts a fresh sign-in with the way the session was signed in by,
+through the portal API's `POST /api/portal/v1/login/start`, and adds the archive timestamp once the person is back.
+This now works for a session signed in by eID card too, which used to show the original error. The application no
+longer calls `POST /api/portal/v1/step-up`, which signbyte-bff v0.4.0 removes; this release works against
+signbyte-bff v0.3.2 as well.
+
 ## v0.4.1
 
 **The eID card button signs in on the auth service's own page.** Like the other two ways, it starts a sign-in

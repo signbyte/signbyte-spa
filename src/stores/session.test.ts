@@ -82,14 +82,26 @@ describe('session store', () => {
     expect(session.identity?.seals).toEqual([])
   })
 
-  it('step-up returns the authorization URL to navigate to', async () => {
+  it('signs in again with the given way and returns where to send the browser', async () => {
     mockPost.mockResolvedValue({ authorize_url: 'https://auth.example/authorize?x=1' })
 
     const session = useSessionStore()
-    const url = await session.stepUp('eparakstsMobile')
+    for (const way of ['eparakstsMobile', 'eidScan', 'webEid']) {
+      mockPost.mockClear()
+      const url = await session.signInAgain(way)
 
-    expect(url).toBe('https://auth.example/authorize?x=1')
-    expect(mockPost).toHaveBeenCalledWith('/step-up', { method: 'eparakstsMobile' })
+      expect(url).toBe('https://auth.example/authorize?x=1')
+      expect(mockPost).toHaveBeenCalledTimes(1)
+      expect(mockPost).toHaveBeenCalledWith('/login/start', { acr_values: way })
+    }
+  })
+
+  it('signs in again with no way named when the session names none', async () => {
+    mockPost.mockResolvedValue({ authorize_url: 'https://auth.example/authorize?x=2' })
+
+    const session = useSessionStore()
+    expect(await session.signInAgain('')).toBe('https://auth.example/authorize?x=2')
+    expect(mockPost).toHaveBeenCalledWith('/login/start', {})
   })
 
   it('marks anonymous on a 401 (no session)', async () => {
